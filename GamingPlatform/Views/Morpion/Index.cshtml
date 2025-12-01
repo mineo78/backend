@@ -1,0 +1,347 @@
+﻿@model GamingPlatform.Views.Morpion.MorpionModel
+@{
+}
+<!DOCTYPE html>
+<html lang="fr">
+<head>
+    <meta charset="UTF-8">
+    <meta name="viewport" content="width=device-width, initial-scale=1.0">
+    <title>Morpion</title>
+    <link href="https://cdn.jsdelivr.net/npm/bootstrap@5.3.2/dist/css/bootstrap.min.css" rel="stylesheet">
+    <link href="https://cdnjs.cloudflare.com/ajax/libs/font-awesome/6.5.0/css/all.min.css" rel="stylesheet">
+    <style>
+        body {
+            background-color: #2c3e50;
+            color: #ecf0f1;
+        }
+
+        .card {
+            background-color: #34495e;
+            color: #ecf0f1;
+        }
+
+        .btn-primary {
+            background-color: #e74c3c;
+            border-color: #e74c3c;
+        }
+
+        .btn-primary:hover {
+            background-color: #c0392b;
+            border-color: #c0392b;
+        }
+
+        table {
+            margin: 0 auto;
+            table-layout: fixed;
+            font-size: 50px;
+            background-color: #34495e;
+            color: #ecf0f1;
+            border-collapse: collapse;
+        }
+
+        table td {
+            width: 100px;
+            height: 100px;
+            text-align: center;
+            vertical-align: middle;
+            border: 3px solid #2c3e50;
+            cursor: pointer;
+        }
+
+        table td:hover {
+            background-color: #e74c3c;
+            color: #fff;
+        }
+    </style>
+</head>
+<body>
+      <script id="board-template" type="text/x-handlebars-template">
+        {{debug}}
+        <table>
+            <tbody>
+                {{#each Pieces}}
+                <tr>
+                    {{#each this}}
+                    <td id="pos-{{@@../index}}-{{@@index}}">{{this}}</td>
+                    {{/each}}
+                </tr>
+                {{/each}}
+            </tbody>
+        </table>
+    </script>
+
+
+    <div class="container py-5">
+        <div class="text-center mb-5">
+            <h1 class="text-warning">Jeu de Morpion</h1>
+            <p class="text-muted">Jouez au jeu de Morpion avec un autre joueur en temps réel !</p>
+        </div>
+
+        <div class="card shadow p-4 mb-4">
+            <h3><i class="fa-solid fa-gamepad"></i> Statut du Jeu :</h3>
+            <p id="status" class="mt-3">Veuillez entrer un nom d'utilisateur pour commencer.</p>
+        </div>
+
+        <div class="text-center mb-5">
+            <div class="input-group mb-3" style="max-width: 400px; margin: auto;">
+                <span class="input-group-text bg-dark text-light"><i class="fa-solid fa-user"></i></span>
+                <input type="text" id="username" class="form-control" placeholder="Nom d'utilisateur" autofocus />
+            </div>
+            <button id="findGame" class="btn btn-primary"><i class="fa-solid fa-search"></i> Trouver un adversaire</button>
+        </div>
+
+        <div id="board" class="mt-4">
+     
+        </div>
+    </div>
+
+    <!-- jQuery -->
+    <script src="https://code.jquery.com/jquery-3.6.4.min.js"></script>
+
+    <!-- Handlebars -->
+    <script src="https://cdnjs.cloudflare.com/ajax/libs/handlebars.js/4.7.7/handlebars.min.js"></script>
+
+    <!-- SignalR -->
+    <script src="https://cdnjs.cloudflare.com/ajax/libs/microsoft-signalr/7.0.4/signalr.min.js"></script>
+
+    <!-- SignalR references must be in this order (include jquery first) -->
+    <script src="/js/jquery-1.9.1.min.js"></script>
+
+
+    <script type="text/javascript">
+        $(function () {
+            Handlebars.registerHelper("debug", function () {
+                console.log("Current Context");
+                console.log(this);
+            });
+
+            function showFindGameButton() {
+                $('#findGame').show();
+            }
+
+            function hideFindGameButton() {
+                $('#findGame').hide();
+            }
+
+
+            disableInput();
+            $('#username').removeAttr('disabled');
+
+            // CLIENT STATE
+            let playerId;
+
+            // SignalR Connection
+            const connection = new signalR.HubConnectionBuilder()
+                .withUrl("/morpionHub")
+                .configureLogging(signalR.LogLevel.Information)
+                .build();
+
+            console.log("SignalR connection state begin:", connection.state);
+
+            // CLIENT METHODS
+      
+                // 1. Lobby créé
+                connection.on("lobbyCreated", function (lobby) {
+                    console.log(`Lobby créé: ${lobby.Name}`);
+                    refreshLobbyList(); // Mettre à jour la liste des lobbys
+                    alert(`Lobby "${lobby.Name}" créé avec succès.`);
+                });
+
+                // 2. Rejoindre un lobby
+                connection.on("joinedLobby", function (lobby) {
+                    console.log(`Rejoint le lobby: ${lobby.Name}`);
+                    $("#status").text(`Vous êtes dans le lobby : ${lobby.Name}`);
+                    showLobbyDetails(lobby);
+                });
+
+                // 3. Joueur a rejoint le lobby
+                connection.on("playerJoinedLobby", function (player) {
+                    console.log(`Joueur rejoint: ${player.Name}`);
+                    $("#lobbyPlayers").append(`<li>${player.Name}</li>`);
+                });
+            connection.on("playerJoined", function (player) {
+                playerId = player.id;
+                $('#usernameGroup').removeClass("has-error");
+                disableInput();
+            });
+            // 7. Partie commencée
+    connection.on("start", function (game) {
+        console.log("Partie commencée!", game);
+        $("#status").text("La partie a commencé !");
+        // Afficher les détails du jeu ici
+    });
+
+    // Actions utilisateur
+    $("#createLobby").click(function () {
+        const lobbyName = $("#lobbyName").val();
+        const isPrivate = $("input[name='lobbyType']:checked").val() === "private";
+        const password = isPrivate ? $("#lobbyPassword").val() : null;
+
+        connection.invoke("CreateLobby", lobbyName, isPrivate, password).catch(function (err) {
+            console.error(err.toString());
+        });
+    });
+
+    $("#joinLobby").click(function () {
+        const lobbyId = $("#lobbyId").val();
+        const password = $("#lobbyPasswordInput").val();
+
+        connection.invoke("JoinLobby", lobbyId, password).catch(function (err) {
+            console.error(err.toString());
+        });
+    });
+
+
+            connection.on("usernameTaken", function () {
+                $('#status').html("Le nom d'utilisateur est déjà pris.");
+                $('#usernameGroup').addClass("has-error");
+            });
+
+            connection.on("opponentLeft", function () {
+                $('#status').html("L'adversaire est parti. Jeu terminé.");
+                endGame();
+            });
+
+            connection.on("waitingList", function () {
+                $('#status').html("En attente d'un adversaire.");
+            });
+
+            connection.on("start", function (game) {
+                buildBoard(game.board);
+                const opponent = getOpponent(game);
+                displayOpponent(opponent);
+                displayTurn(game.whoseTurn, true);
+            });
+
+            connection.on("notPlayersTurn", function () {
+                $('#status').html("Veuillez attendre votre tour.");
+            });
+
+            connection.on("notValidMove", function () {
+                $('#status').html("Veuillez choisir un autre emplacement.");
+            });
+
+            connection.on("piecePlaced", function (row, col, piece) {
+                $(`#pos-${row}-${col}`).html(piece);
+            });
+
+            connection.on("updateTurn", function (game) {
+                displayTurn(game.whoseTurn);
+            });
+
+            connection.on("tieGame", function () {
+                $('#status').html("Match nul!");
+                endGame();
+                showFindGameButton();
+            });
+
+            connection.on("winner", function (playerName) {
+                $('#status').html("le gagnant : " + playerName);
+                endGame();
+                showFindGameButton();
+            });
+
+            // CLIENT BEHAVIORS
+            $('#findGame').click(function () {
+                const chosenUsername = $('#username').val();
+                hideFindGameButton();
+                connection.invoke("FindGame", chosenUsername).catch(function (err) {
+                    console.error(err.toString());
+                });
+            });
+
+            $('#username').keypress(function (e) {
+                if ((e.which && e.which == 13) || (e.keyCode && e.keyCode == 13)) {
+                    $('#findGame').click();
+                    return false;
+                }
+                return true;
+            });
+
+            function enableInput() {
+                $('#username').removeAttr('disabled');
+                $('#findGame').removeAttr('disabled');
+                $('#username').focus();
+            }
+
+            function disableInput() {
+                $('#username').attr('disabled', 'disabled');
+                $('#findGame').attr('disabled', 'disabled');
+            }
+
+            function endGame() {
+                $('td[id^=pos-]').off('click');
+                enableInput();
+            }
+
+            function displayTurn(playersTurn, isDisplayingOpponent) {
+                let turnMessage = "";
+                if (playerId === playersTurn.id) {
+                    turnMessage = "Votre tour";
+                } else {
+                    turnMessage = `${playersTurn.name}'s turn`;
+                }
+
+                if (isDisplayingOpponent) {
+                    $('#status').html($('#status').html() + turnMessage);
+                } else {
+                    $('#status').html(turnMessage);
+                }
+            }
+
+            function displayOpponent(opponent) {
+                $('#status').html(`Vous jouez contre ${opponent.name}<br />`);
+            }
+
+            function buildBoard(board) {
+                // Transform data to match Handlebars template
+                const boardData = { Pieces: board.pieces };
+
+                // Compile and render Handlebars template
+                const template = Handlebars.compile($('#board-template').html());
+                $('#board').html(template(boardData));
+
+                console.log("Building board with data:", board);
+
+
+                $('td[id^=pos-]').click(function (e) {
+                    e.preventDefault();
+                    const id = this.id;
+                    const parts = id.split("-");
+                    const row = parseInt(parts[1], 10);
+                    const col = parseInt(parts[2], 10);
+                    console.log(`Invoking PlacePiece with row=${row}, col=${col}`);
+                    console.log("SignalR connection state end inside build:", connection.state);
+                    connection.invoke("PlacePiece", row, col).catch(function (err) {
+                        console.error(err.toString());
+                    });
+                });
+            }
+
+            function getOpponent(game) {
+                return playerId === game.player1.id ? game.player2 : game.player1;
+            }
+
+            // Start the SignalR connection
+            connection.start().then(function () {
+                enableInput();
+                showFindGameButton();
+                console.log("SignalR connection state end:", connection.state);
+            }).catch(function (err) {
+                console.error("Error starting SignalR connection:", err.toString());
+            });
+        });
+
+
+    </script>
+    <script>
+        function googleTranslateElementInit() {
+            new google.translate.TranslateElement(
+                { pageLanguage: 'fr' },
+                'google_translate_element'
+            );
+        }
+    </script>
+    <script src="https://translate.google.com/translate_a/element.js?cb=googleTranslateElementInit"></script>
+</body>
+</html>
