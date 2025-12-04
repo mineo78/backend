@@ -1,20 +1,20 @@
 {
   "format": 1,
   "restore": {
-    "/Users/nabil/development/study/dotnet/GamingPlatform/GamingPlatform/GamingPlatform.csproj": {}
+    "/Users/zakariazabili/Documents/ProjetDotNet/backend/GamingPlatform/GamingPlatform.csproj": {}
   },
   "projects": {
-    "/Users/nabil/development/study/dotnet/GamingPlatform/GamingPlatform/GamingPlatform.csproj": {
+    "/Users/zakariazabili/Documents/ProjetDotNet/backend/GamingPlatform/GamingPlatform.csproj": {
       "version": "1.0.0",
       "restore": {
-        "projectUniqueName": "/Users/nabil/development/study/dotnet/GamingPlatform/GamingPlatform/GamingPlatform.csproj",
+        "projectUniqueName": "/Users/zakariazabili/Documents/ProjetDotNet/backend/GamingPlatform/GamingPlatform.csproj",
         "projectName": "GamingPlatform",
-        "projectPath": "/Users/nabil/development/study/dotnet/GamingPlatform/GamingPlatform/GamingPlatform.csproj",
-        "packagesPath": "/Users/nabil/.nuget/packages/",
-        "outputPath": "/Users/nabil/development/study/dotnet/GamingPlatform/GamingPlatform/obj/",
+        "projectPath": "/Users/zakariazabili/Documents/ProjetDotNet/backend/GamingPlatform/GamingPlatform.csproj",
+        "packagesPath": "/Users/zakariazabili/.nuget/packages/",
+        "outputPath": "/Users/zakariazabili/Documents/ProjetDotNet/backend/GamingPlatform/obj/",
         "projectStyle": "PackageReference",
         "configFilePaths": [
-          "/Users/nabil/.nuget/NuGet/NuGet.Config"
+          "/Users/zakariazabili/.nuget/NuGet/NuGet.Config"
         ],
         "originalTargetFrameworks": [
           "net9.0"
@@ -62,7 +62,7 @@
               "privateAssets": "all"
             }
           },
-          "runtimeIdentifierGraphPath": "/usr/local/share/dotnet/sdk/9.0.300/PortableRuntimeIdentifierGraph.json"
+          "runtimeIdentifierGraphPath": "/usr/local/share/dotnet/sdk/9.0.304/PortableRuntimeIdentifierGraph.json"
         }
       }
     }
