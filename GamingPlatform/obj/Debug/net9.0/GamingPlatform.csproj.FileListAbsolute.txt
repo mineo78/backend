@@ -190,5 +190,5 @@
 /Users/zakariazabili/Documents/ProjetDotNet/backend/GamingPlatform/obj/Debug/net9.0/GamingPlatform.pdb
 /Users/zakariazabili/Documents/ProjetDotNet/backend/GamingPlatform/obj/Debug/net9.0/GamingPlatform.genruntimeconfig.cache
 /Users/zakariazabili/Documents/ProjetDotNet/backend/GamingPlatform/obj/Debug/net9.0/ref/GamingPlatform.dll
-/Users/zakariazabili/Documents/ProjetDotNet/backend/GamingPlatform/obj/Debug/net9.0/compressed/0bfvrjmvl9-uqydgm11zv.gz
-/Users/zakariazabili/Documents/ProjetDotNet/backend/GamingPlatform/obj/Debug/net9.0/compressed/0eppky2qpf-uqydgm11zv.gz
+/Users/zakariazabili/Documents/ProjetDotNet/backend/GamingPlatform/obj/Debug/net9.0/compressed/0bfvrjmvl9-nn6ubkwfgo.gz
+/Users/zakariazabili/Documents/ProjetDotNet/backend/GamingPlatform/obj/Debug/net9.0/compressed/0eppky2qpf-nn6ubkwfgo.gz
