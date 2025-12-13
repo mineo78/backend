@@ -534,10 +534,6 @@
             
             <div class="column-indicator" id="columnIndicator"></div>
             <div id="gameBoard"></div>
-            
-            <button id="newGameBtn" class="btn-new-game hidden">
-                ↻ Nouvelle partie
-            </button>
         </div>
     </div>
 
@@ -591,7 +587,6 @@
                     setStatus(`${emoji} ${result.winner} a gagné !`, false);
                 }
 
-                $('#newGameBtn').removeClass('hidden');
                 hideColumnIndicator();
             });
 
@@ -617,7 +612,6 @@
             connection.on("OpponentLeft", function (message) {
                 setStatus("😔 " + message, false);
                 disableBoard();
-                $('#newGameBtn').removeClass('hidden');
                 hideColumnIndicator();
             });
 
