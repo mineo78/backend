@@ -93,8 +93,8 @@ app.MapHub<GameHub>("/gameHub");
 
 app.MapControllerRoute(
     name: "puissance4-game",
-    pattern: "Puissance4/Game/{lobby}/{player}",
-    defaults: new { controller = "Puissance4", action = "Puissance4" });
+    pattern: "Puissance4/Game/{id}/{player}",
+    defaults: new { controller = "Puissance4", action = "Game" });
 
 
 app.Run();

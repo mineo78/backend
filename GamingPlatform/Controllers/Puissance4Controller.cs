@@ -20,7 +20,7 @@ namespace GamingPlatform.Controllers
         }
 
         // Afficher la page de jeu
-        public IActionResult Game(string id)
+        public IActionResult Game(string id, string player = null)
         {
             if (string.IsNullOrEmpty(id))
             {
@@ -39,7 +39,7 @@ namespace GamingPlatform.Controllers
                 return RedirectToAction("Index");
             }
 
-            var currentPlayer = HttpContext.Session.GetString("PlayerName");
+            var currentPlayer = player ?? HttpContext.Session.GetString("PlayerName");
             if (string.IsNullOrEmpty(currentPlayer) || !lobby.Players.Contains(currentPlayer))
             {
                 TempData["Message"] = "Vous n'êtes pas autorisé à accéder à ce jeu.";
