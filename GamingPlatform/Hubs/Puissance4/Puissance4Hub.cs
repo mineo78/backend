@@ -105,6 +105,8 @@ namespace GamingPlatform.Hubs.Puissance4
                 return;
             }
 
+            var playerColor = game.WhoseTurn.Color;
+
             int row = game.PlacePiece(column);
             if (row == -1)
             {
@@ -116,7 +118,7 @@ namespace GamingPlatform.Hubs.Puissance4
             {
                 row = row,
                 column = column,
-                color = game.WhoseTurn.Color == game.Player1.Color ? game.Player2.Color : game.Player1.Color,
+                color = playerColor,
                 player = playerName
             });
 
