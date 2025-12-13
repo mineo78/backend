@@ -1,15 +1,11 @@
 ﻿@model IEnumerable<GamingPlatform.Models.GameLobby>
 
-<!DOCTYPE html>
-<html lang="fr">
-<head>
-    <meta charset="UTF-8">
-    <meta name="viewport" content="width=device-width, initial-scale=1.0">
-    <title>Speed Typing - Lobbies</title>
+@{
+    ViewData["Title"] = Localizer["Nav.SpeedTyping"].Value;
+}
 
-    <link href="https://fonts.googleapis.com/css2?family=Outfit:wght@300;400;500;600;700&display=swap" rel="stylesheet">
+@section Styles {
     <link href="https://cdnjs.cloudflare.com/ajax/libs/font-awesome/6.5.0/css/all.min.css" rel="stylesheet">
-
     <style>
         * { margin: 0; padding: 0; box-sizing: border-box; }
 
@@ -249,45 +245,44 @@
             .lobby-join-form { width: 100%; justify-content: flex-start; }
         }
     </style>
-</head>
+}
 
-<body>
-    <div class="bg-particles">
-        <div class="particle"></div>
-        <div class="particle"></div>
-        <div class="particle"></div>
-        <div class="particle"></div>
-        <div class="particle"></div>
+<div class="bg-particles">
+    <div class="particle"></div>
+    <div class="particle"></div>
+    <div class="particle"></div>
+    <div class="particle"></div>
+    <div class="particle"></div>
+</div>
+
+<div class="game-container">
+    <!-- Title -->
+    <div class="header">
+        <h1>@Localizer["SpeedTyping.Lobbies.Title"]</h1>
+        <p class="subtitle">@Localizer["SpeedTyping.Lobbies.Subtitle"]</p>
     </div>
-
-    <div class="game-container">
-        <!-- Title -->
-        <div class="header">
-            <h1>Lobby SpeedTyping</h1>
-            <p class="subtitle">Rejoignez un lobby existant ou créez-en un nouveau pour commencer à jouer.</p>
-        </div>
 
         <div class="row">
             <!-- Create Lobby (LOGIQUE INCHANGÉE) -->
             <div class="col-md-6">
                 <div class="glass-card">
-                    <h3><i class="fa-solid fa-plus-circle"></i> Créer une partie</h3>
+                    <h3><i class="fa-solid fa-plus-circle"></i> @Localizer["SpeedTyping.Lobbies.CreateNew"]</h3>
 
                     <form method="post" action="@Url.Action("Create", "Lobby")" class="mt-4">
                         <input type="hidden" name="gameType" value="SpeedTyping" />
 
                         <div class="mb-3">
-                            <label for="lobbyName" class="form-label">Nom de la partie :</label>
-                            <input type="text" id="lobbyName" name="name" class="form-control" placeholder="Ex: Partie rapide" required>
+                            <label for="lobbyName" class="form-label">@Localizer["Lobby.GameNameLabel"] :</label>
+                            <input type="text" id="lobbyName" name="name" class="form-control" placeholder="@Localizer["Lobby.GameNamePlaceholderExample"]" required>
                         </div>
 
                         <div class="mb-3">
-                            <label for="playerName" class="form-label">Votre pseudo :</label>
-                            <input type="text" id="playerName" name="playerName" class="form-control" placeholder="Entrez votre pseudo" required>
+                            <label for="playerName" class="form-label">@Localizer["Lobby.YourNicknameLabel"] :</label>
+                            <input type="text" id="playerName" name="playerName" class="form-control" placeholder="@Localizer["Lobby.YourNicknamePlaceholder"]" required>
                         </div>
 
                         <button type="submit" class="btn-modern btn-primary-modern w-100">
-                            <i class="fa-solid fa-check"></i> Créer
+                            <i class="fa-solid fa-check"></i> @Localizer["Common.Create"]
                         </button>
                     </form>
                 </div>
@@ -296,13 +291,13 @@
             <!-- Lobby List (LOGIQUE INCHANGÉE) -->
             <div class="col-md-6">
                 <div class="glass-card">
-                    <h3><i class="fa-solid fa-list"></i> Parties disponibles</h3>
+                    <h3><i class="fa-solid fa-list"></i> @Localizer["SpeedTyping.Lobbies.Available"]</h3>
 
                     @if (!Model.Any())
                     {
                         <div class="text-center py-4 text-muted">
                         <i class="fa-regular fa-folder-open fa-2x mb-3 opacity-50"></i>
-                        <p>Aucune partie pour le moment.<br>Soyez le premier à en créer une !</p>
+                        <p>@Localizer["Lobby.NoGames"]</p>
                     </div>
                     }
                     else
@@ -313,13 +308,13 @@
                                 <div class="lobby-item">
                                     <div class="lobby-info">
                                         <h5 class="mb-1">@lobby.Name</h5>
-                                        <small>Hôte: @lobby.HostName | Joueurs: @lobby.Players.Count/@lobby.MaxPlayers</small>
+                                        <small>@Localizer["Lobby.Host"]: @lobby.HostName | @Localizer["Lobby.Players"]: @lobby.Players.Count/@lobby.MaxPlayers</small>
                                     </div>
 
                                     <form method="post" action="@Url.Action("Join", "Lobby")" class="lobby-join-form">
                                         <input type="hidden" name="lobbyId" value="@lobby.Id" />
-                                        <input type="text" name="playerName" class="form-control form-control-sm" placeholder="Pseudo" required style="width: 120px;" />
-                                        <button type="submit" class="btn-modern btn-success-modern">Rejoindre</button>
+                                        <input type="text" name="playerName" class="form-control form-control-sm" placeholder="@Localizer["Lobby.NicknamePlaceholder"]" required style="width: 120px;" />
+                                        <button type="submit" class="btn-modern btn-success-modern">@Localizer["Common.Join"]</button>
                                     </form>
                                 </div>
                             }
@@ -329,5 +324,4 @@
             </div>
         </div>
     </div>
-</body>
-</html>
+</div>

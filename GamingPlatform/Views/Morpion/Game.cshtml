@@ -1,9 +1,9 @@
 ﻿<!DOCTYPE html>
-<html lang="fr">
+<html lang="@System.Globalization.CultureInfo.CurrentUICulture.Name">
 <head>
     <meta charset="UTF-8">
     <meta name="viewport" content="width=device-width, initial-scale=1.0">
-    <title>Liste des lobbys</title>
+    <title>@Localizer["SpeedTyping.LegacyLobbies.PageTitle"]</title>
     <link href="https://cdn.jsdelivr.net/npm/bootstrap@5.3.2/dist/css/bootstrap.min.css" rel="stylesheet">
     <link href="https://cdnjs.cloudflare.com/ajax/libs/font-awesome/6.5.0/css/all.min.css" rel="stylesheet">
     <style>
@@ -47,21 +47,21 @@
 <body>
     <div class="container py-5">
         <div class="text-center mb-5">
-            <h1 class="display-4">Liste des Lobbys</h1>
-            <p class="lead">Rejoignez un lobby existant ou créez-en un nouveau pour commencer à jouer.</p>
+            <h1 class="display-4">@Localizer["SpeedTyping.LegacyLobbies.PageTitle"]</h1>
+            <p class="lead">@Localizer["SpeedTyping.Lobbies.Subtitle"]</p>
         </div>
 
         <div class="card shadow mb-5">
             <div class="card-body">
-                <h2 class="card-title"><i class="fa-solid fa-list"></i> Lobbys disponibles</h2>
+                <h2 class="card-title"><i class="fa-solid fa-list"></i> @Localizer["SpeedTyping.Lobbies.Available"]</h2>
                 <ul  id="lobbyList" class="list-group mt-3">
                     @foreach (var lobby in Model)
                     {
                         <li class="list-group-item d-flex justify-content-between align-items-center">
                             <a href="@Url.Action("Lobby", "SpeedTyping", new { id = lobby.Key })" class="text-decoration-none text-primary notranslate">
-                                <i class="fa-solid fa-door-open"></i> Lobby @lobby.Key
+                                <i class="fa-solid fa-door-open"></i> @Localizer["Common.Lobby"] @lobby.Key
                             </a>
-                            <span class="badge bg-success notranslate">Host: @lobby.Value.Host</span>
+                            <span class="badge bg-success notranslate">@Localizer["Lobby.Host"]: @lobby.Value.Host</span>
                         </li>
                     }
                 </ul>
@@ -70,14 +70,14 @@
 
         <div class="card shadow mb-5">
             <div class="card-body">
-                <h2 class="card-title"><i class="fa-solid fa-plus-circle"></i> Créer un nouveau lobby</h2>
+                <h2 class="card-title"><i class="fa-solid fa-plus-circle"></i> @Localizer["SpeedTyping.Lobbies.CreateNew"]</h2>
                 <form method="post" action="@Url.Action("CreateLobby", "SpeedTyping")" class="mt-4">
                     <div class="mb-3">
-                        <label for="hostName" class="form-label">Nom du lobby :</label>
-                        <input type="text" id="hostName" name="host" class="form-control" placeholder="Entrez un nom" required>
+                        <label for="hostName" class="form-label">@Localizer["SpeedTyping.Lobbies.LobbyNameLabel"]</label>
+                        <input type="text" id="hostName" name="host" class="form-control" placeholder="@Localizer["SpeedTyping.Lobbies.LobbyNamePlaceholder"]" required>
                     </div>
                     <button type="submit" class="btn btn-primary">
-                        <i class="fa-solid fa-check"></i> Créer
+                        <i class="fa-solid fa-check"></i> @Localizer["Common.Create"]
                     </button>
                 </form>
                 @if (ViewData["ErrorMessage"] != null)
@@ -90,13 +90,15 @@
 
     <script src="https://cdnjs.cloudflare.com/ajax/libs/microsoft-signalr/7.0.4/signalr.min.js"></script>
     <script>
+        const i18n = {
+            lobby: "@System.Text.Encodings.Web.JavaScriptEncoder.Default.Encode(Localizer["Common.Lobby"].Value)",
+            host: "@System.Text.Encodings.Web.JavaScriptEncoder.Default.Encode(Localizer["Lobby.Host"].Value)"
+        };
+
         const connection = new signalR.HubConnectionBuilder()
             .withUrl("/speedTypingHub")
             .build();
-
-        connection.start().then(() => {
-            console.log("Connected to SignalR hub.");
-        });
+        connection.start().catch(() => {});
 
         connection.on("LobbyCreated", (host) => {
             const lobbyList = document.getElementById("lobbyList");
@@ -105,30 +107,20 @@
 
             const link = document.createElement("a");
             link.href = `/SpeedTyping/Lobby/${host}`;
-            link.textContent = `Lobby ${host}`;
+            link.textContent = `${i18n.lobby} ${host}`;
             link.classList.add("text-decoration-none", "text-primary");
 
             const badge = document.createElement("span");
             badge.classList.add("badge", "bg-success");
-            badge.textContent = `Host: ${host}`;
+            badge.textContent = `${i18n.host}: ${host}`;
 
             listItem.appendChild(link);
             listItem.appendChild(badge);
 
             lobbyList.appendChild(listItem);
-            console.log(`Nouveau lobby ajouté : ${host}`);
         });
     </script>
 
     <script src="https://cdn.jsdelivr.net/npm/bootstrap@5.3.2/dist/js/bootstrap.bundle.min.js"></script>
-    <script>
-        function googleTranslateElementInit() {
-            new google.translate.TranslateElement(
-                { pageLanguage: 'fr' },
-                'google_translate_element'
-            );
-        }
-    </script>
-    <script src="https://translate.google.com/translate_a/element.js?cb=googleTranslateElementInit"></script>
 </body>
 </html>

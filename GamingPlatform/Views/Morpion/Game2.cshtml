@@ -1,6 +1,6 @@
 @model dynamic
 @{
-    ViewData["Title"] = "Morpion";
+    ViewData["Title"] = Localizer["Game.Morpion.Title"].Value;
     var lobbyId = ViewBag.LobbyId;
     var playerName = ViewBag.PlayerName;
 }
@@ -96,6 +96,24 @@
             font-weight: 500;
         }
 
+        .status-notice {
+            margin-top: 10px;
+            font-size: 0.95rem;
+            color: rgba(255, 255, 255, 0.85);
+            opacity: 0;
+            transform: translateY(4px);
+            transition: opacity 180ms ease, transform 180ms ease;
+        }
+
+        .status-notice.show {
+            opacity: 1;
+            transform: translateY(0);
+        }
+
+        .status-notice.warning { color: #ffcf66; }
+        .status-notice.danger { color: #ff6b6b; }
+        .status-notice.success { color: #4ecdc4; }
+
         /* Plateau de jeu */
         #board {
             background: rgba(15, 15, 26, 0.6);
@@ -152,12 +170,13 @@
 
 <div class="game-container">
     <div class="header">
-        <h1>Morpion</h1>
-        <p class="player-info">Joueur : <strong>@playerName</strong></p>
+        <h1>@Localizer["Game.Morpion.Title"]</h1>
+        <p class="player-info">@Localizer["Morpion.Game.PlayerLabel"] : <strong>@playerName</strong></p>
     </div>
 
     <div class="status-card">
-        <h3><i class="fa-solid fa-gamepad"></i> Statut: <span id="status">Connexion...</span></h3>
+        <h3><i class="fa-solid fa-gamepad"></i> @Localizer["Common.Status"]: <span id="status">@Localizer["Common.Connecting"]</span></h3>
+        <div id="statusNotice" class="status-notice" aria-live="polite"></div>
     </div>
 
     <div id="board"></div>
@@ -184,6 +203,17 @@
 
     <script>
         // === TON CODE ORIGINAL INCHANGÉ (Juste adapté les sélecteurs si besoin) ===
+        const i18n = {
+            connected: "@System.Text.Encodings.Web.JavaScriptEncoder.Default.Encode(Localizer["Morpion.Game.Connected"].Value)",
+            waitingOpponent: "@System.Text.Encodings.Web.JavaScriptEncoder.Default.Encode(Localizer["Morpion.Game.WaitingOpponent"].Value)",
+            gameStartsTurn: "@System.Text.Encodings.Web.JavaScriptEncoder.Default.Encode(Localizer["Morpion.Game.GameStartsTurn"].Value)", // "{0}"
+            turnOf: "@System.Text.Encodings.Web.JavaScriptEncoder.Default.Encode(Localizer["Morpion.Game.TurnOf"].Value)", // "{0}"
+            winnerIs: "@System.Text.Encodings.Web.JavaScriptEncoder.Default.Encode(Localizer["Morpion.Game.WinnerIs"].Value)", // "{0}"
+            playerWon: "@System.Text.Encodings.Web.JavaScriptEncoder.Default.Encode(Localizer["Morpion.Game.PlayerWon"].Value)", // "{0}"
+            tie: "@System.Text.Encodings.Web.JavaScriptEncoder.Default.Encode(Localizer["Morpion.Game.Tie"].Value)",
+            notYourTurn: "@System.Text.Encodings.Web.JavaScriptEncoder.Default.Encode(Localizer["Morpion.Game.NotYourTurn"].Value)",
+            invalidMove: "@System.Text.Encodings.Web.JavaScriptEncoder.Default.Encode(Localizer["Morpion.Game.InvalidMove"].Value)"
+        };
         
         const lobbyId = '@lobbyId';
         const username = '@playerName';
@@ -196,17 +226,17 @@
         const template = Handlebars.compile($("#board-template").html());
 
         connection.start().then(() => {
-            console.log("Connected to MorpionHub");
+            console.log(i18n.connected);
             connection.invoke("JoinGame", lobbyId, username);
         }).catch(err => console.error(err));
 
         connection.on("waitingForOpponent", () => {
-            $("#status").text("En attente de l'adversaire...");
+            $("#status").text(i18n.waitingOpponent);
         });
 
         connection.on("start", (game) => {
-            console.log("Game started:", game);
-            $("#status").text("La partie commence ! C'est au tour de " + game.whoseTurn.name);
+            console.log(game);
+            $("#status").text(i18n.gameStartsTurn.replace("{0}", game.whoseTurn.name));
             renderBoard(game.board);
         });
 
@@ -219,26 +249,44 @@
         });
 
         connection.on("updateTurn", (game) => {
-            $("#status").text("C'est au tour de " + game.whoseTurn.name);
+            $("#status").text(i18n.turnOf.replace("{0}", game.whoseTurn.name));
         });
 
         connection.on("winner", (winnerName) => {
-            $("#status").html(`<span class="text-success">Le gagnant est ${winnerName} !</span>`);
-            alert(winnerName + " a gagné !");
+            $("#status").html(`<span class="text-success">${i18n.winnerIs.replace("{0}", winnerName)}</span>`);
+            alert(i18n.playerWon.replace("{0}", winnerName));
         });
 
         connection.on("tieGame", () => {
-            $("#status").text("Match nul !");
-            alert("Match nul !");
+            $("#status").text(i18n.tie);
+            alert(i18n.tie);
         });
         
         connection.on("notPlayersTurn", () => {
-            alert("Ce n'est pas votre tour !");
+            showNotice(i18n.notYourTurn, "warning");
         });
         
         connection.on("notValidMove", () => {
-            alert("Mouvement invalide !");
+            alert(i18n.invalidMove);
         });
+
+        let noticeTimer = null;
+        function showNotice(message, kind = "warning", timeoutMs = 2500) {
+            const el = document.getElementById("statusNotice");
+            if (!el) return;
+
+            el.textContent = message;
+            el.classList.remove("warning", "danger", "success", "show");
+            el.classList.add(kind);
+            // force reflow for transition
+            void el.offsetWidth;
+            el.classList.add("show");
+
+            if (noticeTimer) clearTimeout(noticeTimer);
+            noticeTimer = setTimeout(() => {
+                el.classList.remove("show");
+            }, timeoutMs);
+        }
 
         function renderBoard(board) {
             $("#board").html(template(board));

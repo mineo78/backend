@@ -233,31 +233,31 @@
 
 <div class="game-container">
     <div class="header">
-        <h1>Lobby Puissance 4</h1>
-        <p class="subtitle">Créez ou rejoignez une partie</p>
+        <h1>@Localizer["Puissance4.Lobbies.Title"]</h1>
+        <p class="subtitle">@Localizer["Puissance4.Lobbies.Subtitle"]</p>
     </div>
 
     <div class="row w-100">
         <!-- Create Lobby (LOGIQUE INCHANGÉE) -->
         <div class="col-md-6 mb-4">
             <div class="glass-card">
-                <h3><i class="fa-solid fa-plus-circle"></i> Créer une partie</h3>
+                <h3><i class="fa-solid fa-plus-circle"></i> @Localizer["Lobby.CreateGame"]</h3>
 
                 <form method="post" action="@Url.Action("Create", "Lobby")">
                     <input type="hidden" name="gameType" value="Puissance4" />
 
                     <div class="mb-3">
-                        <label class="form-label">Nom de la partie :</label>
-                        <input type="text" name="name" class="form-control" placeholder="Ex: Partie rapide" required>
+                        <label class="form-label">@Localizer["Lobby.GameNameLabel"] :</label>
+                        <input type="text" name="name" class="form-control" placeholder="@Localizer["Lobby.GameNamePlaceholderExample"]" required>
                     </div>
 
                     <div class="mb-3">
-                        <label class="form-label">Votre pseudo :</label>
-                        <input type="text" name="playerName" class="form-control" placeholder="Entrez votre pseudo" required>
+                        <label class="form-label">@Localizer["Lobby.YourNicknameLabel"] :</label>
+                        <input type="text" name="playerName" class="form-control" placeholder="@Localizer["Lobby.YourNicknamePlaceholder"]" required>
                     </div>
 
                     <button type="submit" class="btn-modern btn-primary-modern">
-                        <i class="fa-solid fa-check"></i> Créer
+                        <i class="fa-solid fa-check"></i> @Localizer["Common.Create"]
                     </button>
                 </form>
             </div>
@@ -266,13 +266,13 @@
         <!-- Lobby List (LOGIQUE INCHANGÉE) -->
         <div class="col-md-6 mb-4">
             <div class="glass-card">
-                <h3><i class="fa-solid fa-list"></i> Parties disponibles</h3>
+                <h3><i class="fa-solid fa-list"></i> @Localizer["Lobby.AvailableGames"]</h3>
 
                 @if (!Model.Any())
                 {
                     <div class="text-center py-4 text-muted">
                         <i class="fa-regular fa-folder-open fa-2x mb-3 opacity-50"></i>
-                        <p>Aucune partie pour le moment.<br>Soyez le premier à en créer une !</p>
+                        <p>@Localizer["Lobby.NoGames"]</p>
                     </div>
                 }
                 else
@@ -284,16 +284,16 @@
                                 <div class="lobby-info">
                                     <h5>@lobby.Name</h5>
                                     <small>
-                                        <i class="fa-solid fa-user-tie"></i> Hôte: @lobby.HostName
+                                        <i class="fa-solid fa-user-tie"></i> @Localizer["Lobby.Host"]: @lobby.HostName
                                         <span class="mx-2">|</span>
-                                        <i class="fa-solid fa-users"></i> @lobby.Players.Count/@lobby.MaxPlayers
+                                        <i class="fa-solid fa-users"></i> @Localizer["Lobby.Players"]: @lobby.Players.Count/@lobby.MaxPlayers
                                     </small>
                                 </div>
 
                                 <form method="post" action="@Url.Action("Join", "Lobby")" class="lobby-join-form">
                                     <input type="hidden" name="lobbyId" value="@lobby.Id" />
-                                    <input type="text" name="playerName" class="form-control" placeholder="Pseudo" required />
-                                    <button type="submit" class="btn-modern btn-success-modern">Rejoindre</button>
+                                    <input type="text" name="playerName" class="form-control" placeholder="@Localizer["Lobby.NicknamePlaceholder"]" required />
+                                    <button type="submit" class="btn-modern btn-success-modern">@Localizer["Common.Join"]</button>
                                 </form>
                             </div>
                         }

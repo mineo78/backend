@@ -1,14 +1,9 @@
 ﻿@{
 	var tempId = Guid.NewGuid();
+    ViewData["Title"] = Localizer["Game.SpeedTyping.Title"].Value;
 }
 
-<!DOCTYPE html>
-<html lang="fr">
-<head>
-    <meta charset="UTF-8">
-    <meta name="viewport" content="width=device-width, initial-scale=1.0">
-    <title>Lobby - Speed Typing</title>
-    <link href="https://fonts.googleapis.com/css2?family=Outfit:wght@300;400;500;600;700&display=swap" rel="stylesheet">
+@section Styles {
     <link href="https://cdnjs.cloudflare.com/ajax/libs/font-awesome/6.5.0/css/all.min.css" rel="stylesheet">
     <style>
         * {
@@ -204,8 +199,8 @@
             border-top: 1px solid rgba(255, 255, 255, 0.1);
         }
     </style>
-</head>
-<body>
+}
+
     <div class="bg-particles">
         <div class="particle"></div>
         <div class="particle"></div>
@@ -215,8 +210,8 @@
     </div>
     <div class="container py-5">
         <div class="text-center mb-5">
-            <h1 class="text-warning">Bienvenue au Lobby de @Model.Host</h1>
-            <p class="text-muted">Rejoignez le lobby et préparez-vous à une partie de Speed Typing excitante !</p>
+            <h1 class="text-warning">@Localizer["SpeedTyping.Lobby.WelcomeTitle", Model.Host]</h1>
+            <p class="text-muted">@Localizer["SpeedTyping.Lobby.Subtitle"]</p>
         </div>
 
         @if (TempData["Message"] != null)
@@ -234,7 +229,7 @@
         }
 
         <div class="card shadow p-4 mb-4">
-            <h3><i class="fa-solid fa-users"></i> Liste des joueurs :</h3>
+            <h3><i class="fa-solid fa-users"></i> @Localizer["SpeedTyping.Lobby.PlayersTitle"]</h3>
             <ul id="playerList" class="list-group list-group-flush mt-3">
                 @foreach (var player in Model.Players)
                 {
@@ -250,13 +245,13 @@
             <div class="d-flex flex-column align-items-center">
                 <div class="input-group mb-3" style="max-width: 400px;">
                     <span class="input-group-text bg-dark text-light"><i class="fa-solid fa-user-plus"></i></span>
-                    <input type="text" name="player" class="form-control" placeholder="Nom du joueur">
+                    <input type="text" name="player" class="form-control" placeholder="@Localizer["SpeedTyping.Lobby.PlayerNamePlaceholder"]">
                 </div>
                 <button id="joinLobbyButton" class="btn btn-primary mb-3">
-                    <i class="fa-solid fa-door-open"></i> Rejoindre le lobby
+                    <i class="fa-solid fa-door-open"></i> @Localizer["SpeedTyping.Lobby.JoinLobby"]
                 </button>
                 <button id="startGameButton" class="btn btn-success">
-                    <i class="fa-solid fa-play"></i> Démarrer Speed Typing
+                    <i class="fa-solid fa-play"></i> @Localizer["SpeedTyping.Lobby.StartGame"]
                 </button>
 
               
@@ -266,14 +261,14 @@
         {
             <div class="text-center">
                 <a href="@Url.Action("Game", "SpeedTyping", new { id = ViewBag.LobbyId })" class="btn btn-success">
-                    <i class="fa-solid fa-gamepad"></i> Accéder au jeu
+                    <i class="fa-solid fa-gamepad"></i> @Localizer["SpeedTyping.Lobby.GoToGame"]
                 </a>
             </div>
         }
 
         <div class="text-center mt-4">
             <button type="button" class="btn btn-secondary" data-bs-toggle="modal" data-bs-target="#rulesModal">
-                <i class="fa-solid fa-info-circle"></i> Voir les règles
+                <i class="fa-solid fa-info-circle"></i> @Localizer["SpeedTyping.Lobby.ViewRules"]
             </button>
         </div>
     </div>
@@ -283,30 +278,36 @@
         <div class="modal-dialog">
             <div class="modal-content">
                 <div class="modal-header bg-dark text-light">
-                    <h5 class="modal-title" id="rulesModalLabel"><i class="fa-solid fa-book"></i> Règles du Speed Typing</h5>
-                    <button type="button" class="btn-close btn-close-white" data-bs-dismiss="modal" aria-label="Close"></button>
+                    <h5 class="modal-title" id="rulesModalLabel"><i class="fa-solid fa-book"></i> @Localizer["SpeedTyping.Rules.Title"]</h5>
+                    <button type="button" class="btn-close btn-close-white" data-bs-dismiss="modal" aria-label="@Localizer["Common.Close"]"></button>
                 </div>
                 <div class="modal-body bg-light text-dark">
                     <ul>
-                        <li>Chaque joueur doit taper la phrase affichée le plus rapidement possible.</li>
-                        <li>La précision est essentielle : chaque caractère compte.</li>
-                        <li>Le joueur qui termine avec 100% de précision gagne la partie.</li>
-                        <li>Si le temps imparti est écoulé, le joueur avec le meilleur score gagne.</li>
-                        <li>Bonne chance et que le meilleur gagne !</li>
+                        <li>@Localizer["SpeedTyping.Rules.Item1"]</li>
+                        <li>@Localizer["SpeedTyping.Rules.Item2"]</li>
+                        <li>@Localizer["SpeedTyping.Rules.Item3"]</li>
+                        <li>@Localizer["SpeedTyping.Rules.Item4"]</li>
+                        <li>@Localizer["SpeedTyping.Rules.Item5"]</li>
                     </ul>
                 </div>
                 <div class="modal-footer">
                     <button type="button" class="btn btn-secondary" data-bs-dismiss="modal">
-                        <i class="fa-solid fa-times"></i> Fermer
+                        <i class="fa-solid fa-times"></i> @Localizer["Common.Close"]
                     </button>
                 </div>
             </div>
         </div>
     </div>
 
-    <script src="https://cdn.jsdelivr.net/npm/bootstrap@5.3.2/dist/js/bootstrap.bundle.min.js"></script>
+@section Scripts {
     <script src="https://cdnjs.cloudflare.com/ajax/libs/microsoft-signalr/7.0.4/signalr.min.js"></script>
     <script>
+        const i18n = {
+            enterPlayerName: "@System.Text.Encodings.Web.JavaScriptEncoder.Default.Encode(Localizer["SpeedTyping.Lobby.EnterPlayerNameAlert"].Value)",
+            joinLobbyError: "@System.Text.Encodings.Web.JavaScriptEncoder.Default.Encode(Localizer["SpeedTyping.Lobby.JoinLobbyError"].Value)",
+            startGameError: "@System.Text.Encodings.Web.JavaScriptEncoder.Default.Encode(Localizer["SpeedTyping.Lobby.StartGameError"].Value)"
+        };
+
         const lobbyId = '@ViewBag.LobbyId';
         const connection = new signalR.HubConnectionBuilder()
             .withUrl("/speedTypingHub")
@@ -332,8 +333,6 @@
         });
 
         connection.on("GameStarted", (players) => {
-            console.log("Le jeu a démarré !");
-            console.log("Liste des joueurs :", players);
             const playerName = window.localStorage.getItem(lobbyId + "@tempId");
             window.location.href = `/SpeedTyping/Game?id=${lobbyId}&currentPlayer=${playerName}`;
         });
@@ -341,30 +340,20 @@
         document.getElementById("joinLobbyButton")?.addEventListener("click", () => {
             const playerName = document.querySelector('input[name=player]').value.trim();
             if (!playerName) {
-                alert('Veuillez entrer un nom de joueur.');
+                alert(i18n.enterPlayerName);
                 return;
             }
             window.localStorage.setItem(`${lobbyId}@tempId`, playerName);
             connection.invoke("JoinLobby", lobbyId, playerName)
-                .catch(err => console.error("Erreur lors de l'invocation JoinLobby :", err));
+                .catch(() => alert(i18n.joinLobbyError));
         });
 
         document.getElementById("startGameButton")?.addEventListener("click", () => {
             connection.invoke("StartGame", lobbyId)
-                .catch(err => console.error("Erreur lors de l'invocation StartGame :", err));
+                .catch(() => alert(i18n.startGameError));
         });
 
     </script>
-    <script>
-        function googleTranslateElementInit() {
-            new google.translate.TranslateElement(
-                { pageLanguage: 'fr' },
-                'google_translate_element'
-            );
-        }
-    </script>
-    <script src="https://translate.google.com/translate_a/element.js?cb=googleTranslateElementInit"></script>
-</body>
-</html>
+}
 
 

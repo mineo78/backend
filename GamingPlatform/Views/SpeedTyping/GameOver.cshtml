@@ -1,10 +1,8 @@
-﻿<!DOCTYPE html>
-<html lang="en">
-<head>
-    <meta charset="UTF-8">
-    <meta name="viewport" content="width=device-width, initial-scale=1.0">
-    <title>Fin du Jeu</title>
-    <link href="https://cdn.jsdelivr.net/npm/bootstrap@5.3.2/dist/css/bootstrap.min.css" rel="stylesheet">
+﻿@{
+    ViewData["Title"] = Localizer["Game.SpeedTyping.Title"].Value;
+}
+
+@section Styles {
     <link href="https://cdnjs.cloudflare.com/ajax/libs/font-awesome/6.5.0/css/all.min.css" rel="stylesheet">
     <style>
         body {
@@ -35,64 +33,69 @@
             border-color: #c0392b;
         }
     </style>
-</head>
-<body>
-    <div class="container py-5">
-        <div class="text-center mb-5">
-            <i class="fa-solid fa-trophy fa-3x text-warning"></i>
-            <h2 class="mt-3">Fin du jeu</h2>
-        </div>
-        <div id="podiumContainer" class="card shadow p-4"></div>
-        <div class="text-center mt-4">
-            <a href="/SpeedTyping" class="btn btn-primary">
-                <i class="fa-solid fa-arrow-left"></i> Retour à la liste des salons
-            </a>
-        </div>
-    </div>
+}
 
+<div class="container py-5">
+    <div class="text-center mb-5">
+        <i class="fa-solid fa-trophy fa-3x text-warning"></i>
+        <h2 class="mt-3">@Localizer["SpeedTyping.GameOver.Title"]</h2>
+    </div>
+    <div id="podiumContainer" class="card shadow p-4"></div>
+    <div class="text-center mt-4">
+        <a href="/SpeedTyping" class="btn btn-primary">
+            <i class="fa-solid fa-arrow-left"></i> @Localizer["SpeedTyping.GameOver.BackToLobbies"]
+        </a>
+    </div>
+</div>
+
+@section Scripts {
     <script>
+        const i18n = {
+            podiumTitle: "@System.Text.Encodings.Web.JavaScriptEncoder.Default.Encode(Localizer["SpeedTyping.GameOver.PodiumTitle"].Value)",
+            noPlayers: "@System.Text.Encodings.Web.JavaScriptEncoder.Default.Encode(Localizer["SpeedTyping.GameOver.NoPlayers"].Value)",
+            winnerIs: "@System.Text.Encodings.Web.JavaScriptEncoder.Default.Encode(Localizer["SpeedTyping.GameOver.WinnerIs"].Value)" // "{0}"
+        };
+
         const podium = JSON.parse(localStorage.getItem("podium"));
         const winner = localStorage.getItem("winner");
-        console.log(podium);
+        const container = document.getElementById("podiumContainer");
+
+        container.innerHTML = "";
 
         if (podium && podium.length > 0) {
-            let html = `<h3 class="text-center"><i class="fa-solid fa-medal"></i> Podium :</h3><ol class="list-group list-group-numbered mt-3">`;
-            podium.forEach((player, index) => {
-                let icon = "";
-                if (index === 0) icon = '<i class="fa-solid fa-crown text-warning"></i>';
-                else if (index === 1) icon = '<i class="fa-solid fa-star text-secondary"></i>';
-                else if (index === 2) icon = '<i class="fa-solid fa-star-half-stroke text-secondary"></i>';
-                html += `<li class="list-group-item d-flex justify-content-between align-items-center">
-                            ${icon} <span>${player.player}</span>
-                            <span class="badge">${player.progress}%</span>
-                        </li>`;
+            const title = document.createElement("h3");
+            title.className = "text-center";
+            title.innerHTML = `<i class="fa-solid fa-medal"></i> ${i18n.podiumTitle}`;
+
+            const list = document.createElement("ol");
+            list.className = "list-group list-group-numbered mt-3";
+
+            podium.forEach((p, index) => {
+                let iconHtml = "";
+                if (index === 0) iconHtml = '<i class="fa-solid fa-crown text-warning"></i>';
+                else if (index === 1) iconHtml = '<i class="fa-solid fa-star text-secondary"></i>';
+                else if (index === 2) iconHtml = '<i class="fa-solid fa-star-half-stroke text-secondary"></i>';
+
+                const li = document.createElement("li");
+                li.className = "list-group-item d-flex justify-content-between align-items-center";
+                li.innerHTML = `${iconHtml} <span>${p.player}</span><span class="badge">${p.progress}%</span>`;
+                list.appendChild(li);
             });
-            html += `</ol>`;
-            document.getElementById("podiumContainer").innerHTML = html;
+
+            container.appendChild(title);
+            container.appendChild(list);
         } else {
-            document.getElementById("podiumContainer").innerHTML = `
-                <p class="text-muted text-center">
-                    <i class="fa-solid fa-circle-info fa-2x"></i><br>Aucun joueur n'a participé.
-                </p>`;
+            const empty = document.createElement("p");
+            empty.className = "text-muted text-center";
+            empty.innerHTML = `<i class="fa-solid fa-circle-info fa-2x"></i><br>${i18n.noPlayers}`;
+            container.appendChild(empty);
         }
 
         if (winner) {
-            document.getElementById("podiumContainer").innerHTML += `
-                <h3 class="text-center mt-4 text-warning">
-                    <i class="fa-solid fa-trophy"></i> Le vainqueur est : ${winner} !
-                </h3>`;
+            const winnerEl = document.createElement("h3");
+            winnerEl.className = "text-center mt-4 text-warning";
+            winnerEl.innerHTML = `<i class="fa-solid fa-trophy"></i> ${i18n.winnerIs.replace("{0}", winner)}`;
+            container.appendChild(winnerEl);
         }
     </script>
-
-    <script src="https://cdn.jsdelivr.net/npm/bootstrap@5.3.2/dist/js/bootstrap.bundle.min.js"></script>
-    <script>
-        function googleTranslateElementInit() {
-            new google.translate.TranslateElement(
-                { pageLanguage: 'fr' },
-                'google_translate_element'
-            );
-        }
-    </script>
-    <script src="https://translate.google.com/translate_a/element.js?cb=googleTranslateElementInit"></script>
-</body>
-</html>
+}

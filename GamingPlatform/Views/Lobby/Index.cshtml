@@ -221,30 +221,30 @@
 <div class="game-container">
     <div class="header">
         <h1>Lobby @gameType</h1>
-        <p class="subtitle">Rejoignez une partie ou créez la vôtre !</p>
+        <p class="subtitle">@Localizer["Lobby.Subtitle"]</p>
     </div>
 
     <div class="row w-100">
         <!-- Section Création -->
         <div class="col-md-6 mb-4">
             <div class="glass-card">
-                <h3><i class="fa-solid fa-plus-circle"></i> Créer une partie</h3>
+                <h3><i class="fa-solid fa-plus-circle"></i> @Localizer["Lobby.CreateGame"]</h3>
                 
                 <form asp-action="Create" method="post">
                     <input type="hidden" name="gameType" value="@gameType" />
                     
                     <div class="mb-3">
-                        <label class="form-label">Nom de la partie</label>
+                        <label class="form-label">@Localizer["Lobby.GameNameLabel"]</label>
                         <input type="text" name="name" class="form-control" placeholder="Ex: Duel épique" required />
                     </div>
                     
                     <div class="mb-3">
-                        <label class="form-label">Votre pseudo</label>
+                        <label class="form-label">@Localizer["Lobby.YourNicknameLabel"]</label>
                         <input type="text" name="playerName" class="form-control" placeholder="Ex: Player1" required />
                     </div>
                     
                     <button type="submit" class="btn-modern btn-primary-modern">
-                        Créer la partie <i class="fa-solid fa-arrow-right"></i>
+                        @Localizer["Lobby.CreateGame"] <i class="fa-solid fa-arrow-right"></i>
                     </button>
                 </form>
             </div>
@@ -253,13 +253,13 @@
         <!-- Section Liste -->
         <div class="col-md-6 mb-4">
             <div class="glass-card">
-                <h3><i class="fa-solid fa-list"></i> Parties disponibles</h3>
+                <h3><i class="fa-solid fa-list"></i> @Localizer["Lobby.AvailableGames"]</h3>
                 
                 @if (!Model.Any())
                 {
                     <div class="text-center py-4 text-muted">
                         <i class="fa-regular fa-folder-open fa-2x mb-3 opacity-50"></i>
-                        <p>Aucune partie pour le moment.<br>Soyez le premier à en créer une !</p>
+                        <p>@Localizer["Lobby.NoGames"]</p>
                     </div>
                 }
                 else
@@ -271,17 +271,17 @@
                                 <div class="lobby-info">
                                     <h5>@lobby.Name</h5>
                                     <small>
-                                        <i class="fa-solid fa-user-tie"></i> Hôte: @lobby.HostName 
+                                        <i class="fa-solid fa-user-tie"></i> @Localizer["Lobby.Host"]: @lobby.HostName 
                                         <span class="mx-2">|</span> 
-                                        <i class="fa-solid fa-users"></i> @lobby.Players.Count/@lobby.MaxPlayers
+                                        <i class="fa-solid fa-users"></i> @Localizer["Lobby.Players"]: @lobby.Players.Count/@lobby.MaxPlayers
                                     </small>
                                 </div>
                                 
                                 <form asp-action="Join" method="post" class="lobby-join-form">
                                     <input type="hidden" name="lobbyId" value="@lobby.Id" />
-                                    <input type="text" name="playerName" class="form-control" placeholder="Pseudo" required />
+                                    <input type="text" name="playerName" class="form-control" placeholder="@Localizer["Lobby.NicknamePlaceholder"]" required />
                                     <button type="submit" class="btn-modern btn-success-modern">
-                                        Rejoindre
+                                        @Localizer["Common.Join"]
                                     </button>
                                 </form>
                             </div>

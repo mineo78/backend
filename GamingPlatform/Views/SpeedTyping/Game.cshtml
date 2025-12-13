@@ -3,15 +3,10 @@
 @{
     var currentPlayer = ViewBag.CurrentPlayer as string; 
     var lobbyId = ViewBag.LobbyId as string;
+    ViewData["Title"] = Localizer["Game.SpeedTyping.Title"].Value;
 }
 
-<!DOCTYPE html>
-<html lang="fr">
-<head>
-    <meta charset="UTF-8">
-    <meta name="viewport" content="width=device-width, initial-scale=1.0">
-    <title>Speed Typing Game</title>
-    <link href="https://fonts.googleapis.com/css2?family=Outfit:wght@300;400;500;600;700&display=swap" rel="stylesheet">
+@section Styles {
     <link href="https://cdnjs.cloudflare.com/ajax/libs/font-awesome/6.5.0/css/all.min.css" rel="stylesheet">
     <style>
         * {
@@ -238,8 +233,7 @@
             50% { border-color: transparent; }
         }
     </style>
-</head>
-<body>
+}
 <div class="bg-particles">
     <div class="particle"></div>
     <div class="particle"></div>
@@ -253,7 +247,7 @@
         <div class="card text-center p-4 shadow mb-4">
             <h2 class="winner-message">
                 <i class="fa-solid fa-trophy text-warning"></i>
-                Félicitations, @ViewBag.Winner ! Vous avez gagné !
+                @Localizer["SpeedTyping.Game.WinnerCongrats", ViewBag.Winner]
             </h2>
         </div>
     }
@@ -265,19 +259,19 @@
                 <div class="card p-2 shadow">
                     <div class="d-flex justify-content-around align-items-center flex-wrap">
                         <div class="d-flex align-items-center">
-                            <h5 class="mb-0 me-2"><i class="fa-solid fa-id-badge"></i> Joueur :</h5>
+                            <h5 class="mb-0 me-2"><i class="fa-solid fa-id-badge"></i> @Localizer["SpeedTyping.Game.PlayerLabel"] :</h5>
                             <span class="fs-5 fw-bold text-primary">@currentPlayer</span>
                         </div>
                         <div class="d-flex align-items-center">
-                            <h5 class="mb-0 me-2"><i class="fa-solid fa-user"></i> Progression :</h5>
+                            <h5 class="mb-0 me-2"><i class="fa-solid fa-user"></i> @Localizer["SpeedTyping.Game.ProgressLabel"] :</h5>
                             <span id="playerProgress" class="fs-5 fw-bold text-success">
                                 @if (Model.Progress != null && Model.Progress.ContainsKey(currentPlayer))
                                 {
-                                    @($"{Model.Progress[currentPlayer]}%")
+                                    @Localizer["Common.Percent", Model.Progress[currentPlayer]]
                                 }
                                 else
                                 {
-                                    @("0 %")
+                                    @Localizer["Common.Percent", 0]
                                 }
                             </span>
                         </div>
@@ -290,12 +284,12 @@
         <div class="row mb-2">
             <div class="col-12">
                 <div class="card p-3 shadow">
-                    <h4 class="mb-2"><i class="fa-solid fa-quote-left"></i> Phrase à taper :</h4>
+                    <h4 class="mb-2"><i class="fa-solid fa-quote-left"></i> @Localizer["SpeedTyping.Game.TextToTypeTitle"] :</h4>
                     <div class="notranslate position-relative" id="game-area" style="cursor: text;">
                         <div id="text-display" class="bg-dark text-light p-2 rounded" style="min-height: 100px; font-size: 1.3rem; word-wrap: break-word;"></div>
                         <input type="text" id="hiddenInput" style="opacity: 0; position: absolute; top: 0; left: 0; height: 100%; width: 100%; cursor: default; z-index: 10;" autocomplete="off" spellcheck="false">
                     </div>
-                    <p class="text-muted mt-1 small text-center"><i class="fa-solid fa-keyboard"></i> Tapez le texte ci-dessus.</p>
+                    <p class="text-muted mt-1 small text-center"><i class="fa-solid fa-keyboard"></i> @Localizer["SpeedTyping.Game.TypeAboveHint"]</p>
                 </div>
             </div>
         </div>
@@ -304,7 +298,7 @@
         <div class="row">
             <div class="col-12">
                 <div class="card p-3 shadow">
-                    <h4 class="mb-2"><i class="fa-solid fa-users"></i> Progression des joueurs :</h4>
+                    <h4 class="mb-2"><i class="fa-solid fa-users"></i> @Localizer["SpeedTyping.Game.PlayersProgressTitle"] :</h4>
                     @if (Model.Players != null && Model.Players.Any())
                     {
                         <div class="row g-2">
@@ -317,11 +311,11 @@
                                         <span id="progress-@player" class="badge bg-primary small">
                                             @if (Model.Progress != null && Model.Progress.ContainsKey(player))
                                             {
-                                                @($"{Model.Progress[player]}%")
+                                                @Localizer["Common.Percent", Model.Progress[player]]
                                             }
                                             else
                                             {
-                                                @("0%")
+                                                @Localizer["Common.Percent", 0]
                                             }
                                         </span>
                                     </div>
@@ -335,9 +329,13 @@
     }
 </div>
 
-
+@section Scripts {
     <script src="https://cdnjs.cloudflare.com/ajax/libs/microsoft-signalr/7.0.4/signalr.min.js"></script>
     <script>
+        const i18n = {
+            endGameFailed: "@System.Text.Encodings.Web.JavaScriptEncoder.Default.Encode(Localizer["SpeedTyping.Game.EndGameFailed"].Value)"
+        };
+
         // --- Configuration ---
         const lobbyId = '@lobbyId';
         const currentPlayer = '@currentPlayer';
@@ -395,8 +393,8 @@
 
                     connection.invoke("NotifyGameOver", lobbyId)
                         .catch(err => {
-                            console.error("Erreur lors de la notification de fin de partie :", err);
-                            alert("Impossible de terminer la partie. Vérifiez votre connexion.");
+                            console.error(err);
+                            alert(i18n.endGameFailed);
                         });
                 });
             }
@@ -449,10 +447,10 @@
                     .then(() => {
                         if (progress >= 100) {
                             connection.invoke("NotifyGameOver", lobbyId)
-                                .catch(err => console.error("Erreur lors de la fin de la partie :", err));
+                                .catch(err => console.error(err));
                         }
                     })
-                    .catch(err => console.error("Erreur lors de UpdatePlayerProgress :", err));
+                    .catch(err => console.error(err));
             } else {
                 console.warn("Connection not ready, cannot send progress.");
             }
@@ -472,7 +470,7 @@
         });
 
         connection.on("EndGame", (data) => {
-            console.log("Fin de la partie. Données reçues :", data);
+            console.log(data);
             localStorage.setItem("podium", JSON.stringify(data.podium));
             localStorage.setItem("winner", data.winner);
             window.location.href = "/SpeedTyping/GameOver?id=" + lobbyId;
@@ -493,14 +491,4 @@
         startConnection();
 
     </script>
-    <script>
-        function googleTranslateElementInit() {
-            new google.translate.TranslateElement(
-                { pageLanguage: 'fr' },
-                'google_translate_element'
-            );
-        }
-    </script>
-    <script src="https://translate.google.com/translate_a/element.js?cb=googleTranslateElementInit"></script>
-</body>
-</html>
+}
