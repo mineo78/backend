@@ -6,14 +6,12 @@
     <meta charset="UTF-8">
     <meta name="viewport" content="width=device-width, initial-scale=1.0">
     <title>Speed Typing - Lobbies</title>
+
     <link href="https://fonts.googleapis.com/css2?family=Outfit:wght@300;400;500;600;700&display=swap" rel="stylesheet">
     <link href="https://cdnjs.cloudflare.com/ajax/libs/font-awesome/6.5.0/css/all.min.css" rel="stylesheet">
+
     <style>
-        * {
-            margin: 0;
-            padding: 0;
-            box-sizing: border-box;
-        }
+        * { margin: 0; padding: 0; box-sizing: border-box; }
 
         body {
             font-family: 'Outfit', sans-serif;
@@ -23,6 +21,7 @@
             overflow-x: hidden;
         }
 
+        /* Background Particles */
         .bg-particles {
             position: fixed;
             top: 0;
@@ -55,109 +54,203 @@
             100% { transform: translateY(-10vh) scale(1); opacity: 0; }
         }
 
-        .container {
+        /* Container principal */
+        .game-container {
             position: relative;
             z-index: 1;
+            max-width: 1100px;
+            margin: 0 auto;
             padding: 40px 20px;
+            display: flex;
+            flex-direction: column;
+            align-items: center;
         }
 
-        h1, h2 {
-            background: linear-gradient(135deg, #fff 0%, #a5b4fc 100%);
+        /* Header */
+        .header {
+            text-align: center;
+            margin-bottom: 40px;
+            animation: fadeInDown 0.8s ease-out;
+        }
+
+        @@keyframes fadeInDown {
+            from { opacity: 0; transform: translateY(-30px); }
+            to { opacity: 1; transform: translateY(0); }
+        }
+
+        h1 {
+            font-size: 2.8rem;
+            font-weight: 700;
+            background: linear-gradient(135deg, #ff6b6b, #4ecdc4);
             -webkit-background-clip: text;
             -webkit-text-fill-color: transparent;
-            margin-bottom: 20px;
+            background-clip: text;
+            margin-bottom: 0.5rem;
+            letter-spacing: -1px;
         }
 
-        .card {
-            background: rgba(26, 26, 46, 0.8);
-            backdrop-filter: blur(10px);
-            border: 1px solid rgba(255, 255, 255, 0.1);
+        .subtitle {
+            color: #a0aec0;
+            font-size: 1.1rem;
+            font-weight: 300;
+        }
+
+        /* Cards Glassmorphism */
+        .glass-card {
+            background: rgba(255, 255, 255, 0.03);
+            border: 1px solid rgba(255, 255, 255, 0.08);
             border-radius: 16px;
+            padding: 30px;
+            backdrop-filter: blur(10px);
+            margin-bottom: 24px;
+            box-shadow: 0 8px 32px rgba(0, 0, 0, 0.2);
             color: #e0e0e0;
-            box-shadow: 0 8px 32px rgba(0, 0, 0, 0.3);
-            transition: transform 0.3s ease, box-shadow 0.3s ease;
+            height: 100%;
+            transition: transform 0.3s ease;
         }
 
-        .card:hover {
+        .glass-card:hover {
             transform: translateY(-5px);
-            box-shadow: 0 12px 48px rgba(78, 205, 196, 0.2);
+            border-color: rgba(78, 205, 196, 0.3);
         }
 
-        .btn-primary {
-            background: linear-gradient(135deg, #ff6b6b, #ff8787);
-            border: none;
-            border-radius: 12px;
-            padding: 12px 30px;
+        .glass-card h3 {
+            font-size: 1.5rem;
             font-weight: 600;
-            color: white;
-            transition: all 0.3s ease;
-            box-shadow: 0 4px 15px rgba(255, 107, 107, 0.3);
+            color: #fff;
+            margin-bottom: 20px;
+            border-bottom: 1px solid rgba(255,255,255,0.1);
+            padding-bottom: 10px;
         }
 
-        .btn-primary:hover {
-            background: linear-gradient(135deg, #ff5252, #ff6b6b);
-            transform: translateY(-2px);
-            box-shadow: 0 6px 20px rgba(255, 107, 107, 0.4);
+        /* Form */
+        .form-label {
+            color: #a0aec0;
+            font-size: 0.9rem;
+            margin-bottom: 8px;
+            display: block;
         }
 
         .form-control {
-            background: rgba(15, 15, 26, 0.6);
-            border: 2px solid rgba(255, 255, 255, 0.1);
-            border-radius: 12px;
-            color: #e0e0e0;
-            padding: 12px 16px;
-            transition: all 0.3s ease;
+            background: rgba(255, 255, 255, 0.05);
+            border: 1px solid rgba(255, 255, 255, 0.1);
+            border-radius: 8px;
+            color: #fff;
+            padding: 12px 15px;
+            outline: none;
         }
 
         .form-control:focus {
-            background: rgba(15, 15, 26, 0.8);
+            background: rgba(255, 255, 255, 0.1);
             border-color: #4ecdc4;
-            box-shadow: 0 0 20px rgba(78, 205, 196, 0.3);
-            color: #e0e0e0;
+            box-shadow: 0 0 0 4px rgba(78, 205, 196, 0.1);
+            color: #fff;
         }
 
-        .form-control::placeholder {
-            color: rgba(224, 224, 224, 0.5);
-        }
+        .form-control::placeholder { color: rgba(160, 174, 192, 0.9); }
 
-        .list-group-item {
-            background: rgba(15, 15, 26, 0.5);
-            border: 1px solid rgba(255, 255, 255, 0.1);
-            color: #e0e0e0;
-            padding: 16px;
-            margin-bottom: 8px;
-            border-radius: 12px;
-            transition: all 0.3s ease;
-        }
-
-        .list-group-item:hover {
-            background: rgba(78, 205, 196, 0.1);
-            border-color: #4ecdc4;
-            transform: translateX(5px);
-        }
-
-        .list-group-item a {
-            color: #4ecdc4;
-            text-decoration: none;
-            font-weight: 500;
-        }
-
-        .badge {
-            background: linear-gradient(135deg, #4ecdc4, #44a3a0);
+        /* Buttons */
+        .btn-modern {
+            width: 100%;
+            padding: 12px;
+            border: none;
             border-radius: 8px;
-            padding: 6px 12px;
-            font-weight: 500;
+            font-weight: 600;
+            transition: all 0.3s ease;
+            cursor: pointer;
+            margin-top: 10px;
+            display: inline-flex;
+            align-items: center;
+            justify-content: center;
+            gap: 10px;
         }
 
-        .text-danger {
-            color: #ff6b6b !important;
+        .btn-primary-modern {
+            background: linear-gradient(135deg, #ff6b6b, #ee5a5a);
+            color: white;
         }
 
-        .lead {
-            color: rgba(224, 224, 224, 0.8);
+        .btn-primary-modern:hover {
+            box-shadow: 0 5px 15px rgba(255, 107, 107, 0.4);
+            transform: translateY(-2px);
+        }
+
+        .btn-success-modern {
+            background: linear-gradient(135deg, #4ecdc4, #3dbdb5);
+            color: white;
+            padding: 8px 20px;
+            width: auto;
+            font-size: 0.9rem;
+        }
+
+        .btn-success-modern:hover {
+            box-shadow: 0 5px 15px rgba(78, 205, 196, 0.4);
+            transform: translateY(-2px);
+        }
+
+        /* Lobby items */
+        .lobby-item {
+            background: rgba(255, 255, 255, 0.05);
+            border: 1px solid rgba(255, 255, 255, 0.05);
+            border-radius: 10px;
+            padding: 15px;
+            margin-bottom: 10px;
+            transition: all 0.2s ease;
+            display: flex;
+            justify-content: space-between;
+            align-items: center;
+            gap: 16px;
+        }
+
+        .lobby-item:hover {
+            background: rgba(255, 255, 255, 0.08);
+            border-color: rgba(78, 205, 196, 0.2);
+        }
+
+        .lobby-info h5 {
+            margin: 0 0 5px 0;
+            font-size: 1.1rem;
+            color: #fff;
+        }
+
+        .lobby-info small {
+            color: #a0aec0;
+            font-size: 0.85rem;
+        }
+
+        .lobby-join-form {
+            display: flex;
+            gap: 10px;
+            align-items: center;
+            flex-wrap: wrap;
+            justify-content: flex-end;
+        }
+
+        .lobby-join-form input {
+            width: 140px;
+            padding: 8px 12px;
+            font-size: 0.9rem;
+        }
+
+        /* Minimal “bootstrap-like” layout helpers (au cas où bootstrap n'est pas chargé ici) */
+        .row { display: flex; gap: 20px; flex-wrap: wrap; width: 100%; }
+        .col-md-6 { flex: 1; min-width: 320px; }
+        .mb-4 { margin-bottom: 1.5rem; }
+        .w-100 { width: 100%; }
+        .text-center { text-align: center; }
+        .text-muted { color: #a0aec0 !important; }
+        .mt-3 { margin-top: 1rem; }
+        .mt-4 { margin-top: 1.5rem; }
+        .mb-1 { margin-bottom: .25rem; }
+        .mb-5 { margin-bottom: 3rem; }
+
+        @@media (max-width: 520px) {
+            .lobby-item { flex-direction: column; align-items: flex-start; }
+            .lobby-join-form { width: 100%; justify-content: flex-start; }
         }
     </style>
 </head>
+
 <body>
     <div class="bg-particles">
         <div class="particle"></div>
@@ -167,74 +260,74 @@
         <div class="particle"></div>
     </div>
 
-    <div class="container py-5">
+    <div class="game-container">
         <!-- Title -->
-        <div class="text-center mb-5">
-            <h1 class="display-4">Liste des Lobbys</h1>
-            <p class="lead">Rejoignez un lobby existant ou créez-en un nouveau pour commencer à jouer.</p>
+        <div class="header">
+            <h1>Lobby SpeedTyping</h1>
+            <p class="subtitle">Rejoignez un lobby existant ou créez-en un nouveau pour commencer à jouer.</p>
         </div>
 
         <div class="row">
-            <!-- Create Lobby -->
+            <!-- Create Lobby (LOGIQUE INCHANGÉE) -->
             <div class="col-md-6">
-                <div class="card shadow mb-4">
-                    <div class="card-body">
-                        <h2 class="card-title"><i class="fa-solid fa-plus-circle"></i> Créer une partie</h2>
-                        <form method="post" action="@Url.Action("Create", "Lobby")" class="mt-4">
-                            <input type="hidden" name="gameType" value="SpeedTyping" />
-                            <div class="mb-3">
-                                <label for="lobbyName" class="form-label">Nom de la partie :</label>
-                                <input type="text" id="lobbyName" name="name" class="form-control" placeholder="Ex: Partie rapide" required>
-                            </div>
-                            <div class="mb-3">
-                                <label for="playerName" class="form-label">Votre pseudo :</label>
-                                <input type="text" id="playerName" name="playerName" class="form-control" placeholder="Entrez votre pseudo" required>
-                            </div>
-                            <button type="submit" class="btn btn-primary w-100">
-                                <i class="fa-solid fa-check"></i> Créer
-                            </button>
-                        </form>
-                    </div>
+                <div class="glass-card">
+                    <h3><i class="fa-solid fa-plus-circle"></i> Créer une partie</h3>
+
+                    <form method="post" action="@Url.Action("Create", "Lobby")" class="mt-4">
+                        <input type="hidden" name="gameType" value="SpeedTyping" />
+
+                        <div class="mb-3">
+                            <label for="lobbyName" class="form-label">Nom de la partie :</label>
+                            <input type="text" id="lobbyName" name="name" class="form-control" placeholder="Ex: Partie rapide" required>
+                        </div>
+
+                        <div class="mb-3">
+                            <label for="playerName" class="form-label">Votre pseudo :</label>
+                            <input type="text" id="playerName" name="playerName" class="form-control" placeholder="Entrez votre pseudo" required>
+                        </div>
+
+                        <button type="submit" class="btn-modern btn-primary-modern w-100">
+                            <i class="fa-solid fa-check"></i> Créer
+                        </button>
+                    </form>
                 </div>
             </div>
 
-            <!-- Lobby List -->
+            <!-- Lobby List (LOGIQUE INCHANGÉE) -->
             <div class="col-md-6">
-                <div class="card shadow mb-4">
-                    <div class="card-body">
-                        <h2 class="card-title"><i class="fa-solid fa-list"></i> Parties disponibles</h2>
-                        @if (!Model.Any())
-                        {
-                            <p class="text-muted mt-3">Aucune partie disponible.</p>
-                        }
-                        else
-                        {
-                            <ul id="lobbyList" class="list-group mt-3">
-                                @foreach (var lobby in Model)
-                                {
-                                    <li class="list-group-item">
-                                        <div class="d-flex justify-content-between align-items-center">
-                                            <div>
-                                                <h5 class="mb-1">@lobby.Name</h5>
-                                                <small>Hôte: @lobby.HostName | Joueurs: @lobby.Players.Count/@lobby.MaxPlayers</small>
-                                            </div>
-                                            <form method="post" action="@Url.Action("Join", "Lobby")" class="d-flex gap-2">
-                                                <input type="hidden" name="lobbyId" value="@lobby.Id" />
-                                                <input type="text" name="playerName" class="form-control form-control-sm" placeholder="Pseudo" required style="width: 120px;" />
-                                                <button type="submit" class="btn btn-success btn-sm">Rejoindre</button>
-                                            </form>
-                                        </div>
-                                    </li>
-                                }
-                            </ul>
-                        }
+                <div class="glass-card">
+                    <h3><i class="fa-solid fa-list"></i> Parties disponibles</h3>
+
+                    @if (!Model.Any())
+                    {
+                        <div class="text-center py-4 text-muted">
+                        <i class="fa-regular fa-folder-open fa-2x mb-3 opacity-50"></i>
+                        <p>Aucune partie pour le moment.<br>Soyez le premier à en créer une !</p>
                     </div>
+                    }
+                    else
+                    {
+                        <div id="lobbyList" class="mt-3">
+                            @foreach (var lobby in Model)
+                            {
+                                <div class="lobby-item">
+                                    <div class="lobby-info">
+                                        <h5 class="mb-1">@lobby.Name</h5>
+                                        <small>Hôte: @lobby.HostName | Joueurs: @lobby.Players.Count/@lobby.MaxPlayers</small>
+                                    </div>
+
+                                    <form method="post" action="@Url.Action("Join", "Lobby")" class="lobby-join-form">
+                                        <input type="hidden" name="lobbyId" value="@lobby.Id" />
+                                        <input type="text" name="playerName" class="form-control form-control-sm" placeholder="Pseudo" required style="width: 120px;" />
+                                        <button type="submit" class="btn-modern btn-success-modern">Rejoindre</button>
+                                    </form>
+                                </div>
+                            }
+                        </div>
+                    }
                 </div>
             </div>
         </div>
     </div>
-
-
-
 </body>
 </html>
