@@ -1,10 +1,17 @@
 using GamingPlatform.Hubs;
 using GamingPlatform.Hubs.Morpion;
 using GamingPlatform.Hubs.Puissance4;
+using Microsoft.AspNetCore.Localization;
+using Microsoft.Extensions.Options;
+using System.Globalization;
 var builder = WebApplication.CreateBuilder(args);
 
 // Add services to the container.
-builder.Services.AddControllersWithViews();
+builder.Services.AddLocalization(options => options.ResourcesPath = "Resources");
+builder.Services
+    .AddControllersWithViews()
+    .AddViewLocalization()
+    .AddDataAnnotationsLocalization();
 builder.Services.AddSingleton<GamingPlatform.Services.LobbyService>();
 builder.Services.AddSingleton<GamingPlatform.Hubs.Morpion.GameState>();
 builder.Services.AddSingleton<GamingPlatform.Hubs.Puissance4.GameState>();
@@ -34,6 +41,23 @@ builder.Services.AddCors(options =>
 
 var app = builder.Build();
 
+// Localization / cultures
+var supportedCultures = new[]
+{
+    new CultureInfo("fr-FR"),
+    new CultureInfo("en-US"),
+    new CultureInfo("es-ES"),
+};
+
+var localizationOptions = new RequestLocalizationOptions
+{
+    DefaultRequestCulture = new RequestCulture("fr-FR"),
+    SupportedCultures = supportedCultures,
+    SupportedUICultures = supportedCultures,
+};
+// Keep cookie provider first so selection persists and wins over Accept-Language
+localizationOptions.RequestCultureProviders.Insert(0, new CookieRequestCultureProvider());
+
 // Configure the HTTP request pipeline.
 if (!app.Environment.IsDevelopment())
 {
@@ -44,6 +68,8 @@ if (!app.Environment.IsDevelopment())
 app.UseHttpsRedirection();
 app.UseStaticFiles();
 app.UseCors();  // Cette ligne doit être avant UseRouting()
+
+app.UseRequestLocalization(localizationOptions);
 
 app.UseRouting();
 

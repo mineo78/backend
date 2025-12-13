@@ -1,5 +1,6 @@
 ﻿<!DOCTYPE html>
-<html lang="fr">
+@using System.Globalization
+<html lang="@CultureInfo.CurrentUICulture.Name">
 <head>
     <meta charset="utf-8" />
     <meta name="viewport" content="width=device-width, initial-scale=1.0" />
@@ -135,11 +136,11 @@
             cursor: pointer;
         }
 
-        #google_translate_element {
+        .gp-lang {
             margin-left: 20px;
         }
-        
-        #google_translate_element select {
+
+        .gp-lang select {
             background: rgba(255, 255, 255, 0.05);
             color: #e0e0e0;
             border: 1px solid rgba(255, 255, 255, 0.1);
@@ -187,7 +188,7 @@
                 display: block;
             }
 
-            #google_translate_element {
+            .gp-lang {
                 margin-left: 0;
             }
         }
@@ -196,6 +197,10 @@
     @RenderSection("Styles", required: false)
 </head>
 <body>
+@{
+    var currentCulture = CultureInfo.CurrentUICulture.Name;
+    var returnUrl = Context.Request.Path + Context.Request.QueryString;
+}
 
     <header class="gp-navbar">
         <div class="gp-container-nav">
@@ -213,16 +218,25 @@
 
             <ul class="gp-nav-links">
                 <li class="gp-nav-item">
-                    <a asp-controller="Puissance4" asp-action="Game">Puissance 4</a>
+                    <a asp-controller="Puissance4" asp-action="Game">@Localizer["Nav.Puissance4"]</a>
                 </li>
                 <li class="gp-nav-item">
-                    <a asp-controller="SpeedTyping" asp-action="Index">Speed Typing</a>
+                    <a asp-controller="SpeedTyping" asp-action="Index">@Localizer["Nav.SpeedTyping"]</a>
                 </li>
                 <li class="gp-nav-item">
-                    <a asp-controller="Morpion" asp-action="Index">Morpion</a>
+                    <a asp-controller="Morpion" asp-action="Index">@Localizer["Nav.Morpion"]</a>
                 </li>
                 <li>
-                    <div id="google_translate_element"></div>
+                    <form class="gp-lang" asp-controller="Localization" asp-action="SetLanguage" method="post">
+                        @Html.AntiForgeryToken()
+                        <input type="hidden" name="returnUrl" value="@returnUrl" />
+                        <label class="visually-hidden" for="culture-select">@Localizer["Nav.Language"]</label>
+                        <select id="culture-select" name="culture" onchange="this.form.submit()">
+                            <option value="fr-FR" selected="@(currentCulture == "fr-FR" ? "selected" : null)">Français</option>
+                            <option value="en-US" selected="@(currentCulture == "en-US" ? "selected" : null)">English</option>
+                            <option value="es-ES" selected="@(currentCulture == "es-ES" ? "selected" : null)">Español</option>
+                        </select>
+                    </form>
                 </li>
             </ul>
         </div>

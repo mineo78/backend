@@ -1,17 +1,11 @@
 @model GamingPlatform.Models.GameLobby
 @{
     var currentPlayer = ViewBag.PlayerName as string;
+    ViewData["Title"] = Localizer["Room.Title", Model.Name].Value;
 }
 
-<!DOCTYPE html>
-<html lang="fr">
-<head>
-    <meta charset="UTF-8">
-    <meta name="viewport" content="width=device-width, initial-scale=1.0">
-    <title>Salle d'attente - @Model.Name</title>
-    <link href="https://fonts.googleapis.com/css2?family=Outfit:wght@300;400;500;600;700&display=swap" rel="stylesheet">
+@section Styles {
     <link href="https://cdnjs.cloudflare.com/ajax/libs/font-awesome/6.5.0/css/all.min.css" rel="stylesheet">
-    <link href="https://cdn.jsdelivr.net/npm/bootstrap@5.3.2/dist/css/bootstrap.min.css" rel="stylesheet">
     <style>
         :root{
             --bg1:#0f0f1a;
@@ -111,43 +105,44 @@
             color: rgba(78,205,196,0.95) !important;
         }
     </style>
-</head>
-<body>
-    <div class="container py-5">
-        <div class="text-center mb-5">
-            <h1>Salle d'attente: @Model.Name</h1>
-            <p class="text-muted">Jeu: @Model.GameType</p>
-        </div>
+}
 
-        <div class="card p-4 mb-4" style="max-width: 600px; margin: 0 auto;">
-            <h3>Joueurs (<span id="playerCount">@Model.Players.Count</span>/@Model.MaxPlayers)</h3>
-            <ul id="playerList" class="list-group list-group-flush mt-3">
-                @foreach (var player in Model.Players)
-                {
-                    <li class="list-group-item bg-transparent text-light border-secondary">
-                        <i class="fa-solid fa-user"></i> @player
-                    </li>
-                }
-            </ul>
-
-            @if (Model.HostName == currentPlayer)
-            {
-                <div class="mt-4 text-center">
-                    <button id="startGameBtn" class="btn btn-success btn-lg" @(Model.Players.Count < 2 ? "disabled" : "")>
-                        <i class="fa-solid fa-play"></i> Démarrer la partie
-                    </button>
-                    <p id="waitingMsg" class="text-muted mt-2 @(Model.Players.Count < 2 ? "" : "d-none")">En attente d'autres joueurs...</p>
-                </div>
-            }
-            else
-            {
-                <div class="mt-4 text-center">
-                    <p class="text-info">En attente que l'hôte démarre la partie...</p>
-                </div>
-            }
-        </div>
+<div class="container py-5">
+    <div class="text-center mb-5">
+        <h1>@Localizer["Room.Title", Model.Name]</h1>
+        <p class="text-muted">@Localizer["Room.Game"]: @Model.GameType</p>
     </div>
 
+    <div class="card p-4 mb-4" style="max-width: 600px; margin: 0 auto;">
+        <h3>@Localizer["Lobby.Players"] (<span id="playerCount">@Model.Players.Count</span>/@Model.MaxPlayers)</h3>
+        <ul id="playerList" class="list-group list-group-flush mt-3">
+            @foreach (var player in Model.Players)
+            {
+                <li class="list-group-item bg-transparent text-light border-secondary">
+                    <i class="fa-solid fa-user"></i> @player
+                </li>
+            }
+        </ul>
+
+        @if (Model.HostName == currentPlayer)
+        {
+            <div class="mt-4 text-center">
+                <button id="startGameBtn" class="btn btn-success btn-lg" @(Model.Players.Count < 2 ? "disabled" : "")>
+                    <i class="fa-solid fa-play"></i> @Localizer["Room.StartGame"]
+                </button>
+                <p id="waitingMsg" class="text-muted mt-2 @(Model.Players.Count < 2 ? "" : "d-none")">@Localizer["Room.WaitingOthers"]</p>
+            </div>
+        }
+        else
+        {
+            <div class="mt-4 text-center">
+                <p class="text-info">@Localizer["Room.WaitingHost"]</p>
+            </div>
+        }
+    </div>
+</div>
+
+@section Scripts {
     <script src="https://cdnjs.cloudflare.com/ajax/libs/microsoft-signalr/7.0.4/signalr.min.js"></script>
     <script>
         const lobbyId = '@Model.Id';
@@ -201,5 +196,4 @@
             });
         }
     </script>
-</body>
-</html>
+}

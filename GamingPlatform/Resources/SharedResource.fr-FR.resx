@@ -1,0 +1,333 @@
+<?xml version="1.0" encoding="utf-8"?>
+<root>
+  <resheader name="resmimetype">
+    <value>text/microsoft-resx</value>
+  </resheader>
+  <resheader name="version">
+    <value>2.0</value>
+  </resheader>
+  <resheader name="reader">
+    <value>System.Resources.ResXResourceReader, System.Windows.Forms, Version=9.0.0.0, Culture=neutral, PublicKeyToken=b77a5c561934e089</value>
+  </resheader>
+  <resheader name="writer">
+    <value>System.Resources.ResXResourceWriter, System.Windows.Forms, Version=9.0.0.0, Culture=neutral, PublicKeyToken=b77a5c561934e089</value>
+  </resheader>
+
+  <data name="Nav.Home" xml:space="preserve">
+    <value>Accueil</value>
+  </data>
+  <data name="Nav.Lobbies" xml:space="preserve">
+    <value>Lobbys</value>
+  </data>
+  <data name="Nav.Scores" xml:space="preserve">
+    <value>Scores</value>
+  </data>
+  <data name="Nav.Puissance4" xml:space="preserve">
+    <value>Puissance 4</value>
+  </data>
+  <data name="Nav.SpeedTyping" xml:space="preserve">
+    <value>Speed Typing</value>
+  </data>
+  <data name="Nav.Morpion" xml:space="preserve">
+    <value>Morpion</value>
+  </data>
+  <data name="Nav.Language" xml:space="preserve">
+    <value>Langue</value>
+  </data>
+
+  <data name="Common.Play" xml:space="preserve">
+    <value>Jouer</value>
+  </data>
+  <data name="Common.PlayNow" xml:space="preserve">
+    <value>Jouer maintenant</value>
+  </data>
+  <data name="Common.Create" xml:space="preserve">
+    <value>Créer</value>
+  </data>
+  <data name="Common.Lobby" xml:space="preserve">
+    <value>Lobby</value>
+  </data>
+  <data name="Common.Join" xml:space="preserve">
+    <value>Rejoindre</value>
+  </data>
+
+  <data name="Home.HeroTitle" xml:space="preserve">
+    <value>Chemin de Travers</value>
+  </data>
+  <data name="Home.HeroSubtitle" xml:space="preserve">
+    <value>Découvrez nos jeux interactifs et défiez vos amis en temps réel !</value>
+  </data>
+  <data name="Home.GamesTitle" xml:space="preserve">
+    <value>Nos Jeux Disponibles</value>
+  </data>
+
+  <data name="Game.Puissance4.Title" xml:space="preserve">
+    <value>Puissance 4</value>
+  </data>
+  <data name="Game.Puissance4.Desc" xml:space="preserve">
+    <value>Soyez le premier à aligner quatre jetons pour remporter la victoire !</value>
+  </data>
+  <data name="Game.SpeedTyping.Title" xml:space="preserve">
+    <value>Speed Typing</value>
+  </data>
+  <data name="Game.SpeedTyping.Desc" xml:space="preserve">
+    <value>Testez votre vitesse de frappe et votre précision face au chrono.</value>
+  </data>
+  <data name="Game.Morpion.Title" xml:space="preserve">
+    <value>Morpion</value>
+  </data>
+  <data name="Game.Morpion.Desc" xml:space="preserve">
+    <value>Le classique indémodable. Alignez trois symboles avant l'adversaire.</value>
+  </data>
+
+  <data name="Lobby.Subtitle" xml:space="preserve">
+    <value>Rejoignez une partie ou créez la vôtre !</value>
+  </data>
+  <data name="Lobby.CreateGame" xml:space="preserve">
+    <value>Créer une partie</value>
+  </data>
+  <data name="Lobby.GameNameLabel" xml:space="preserve">
+    <value>Nom de la partie</value>
+  </data>
+  <data name="Lobby.GameNamePlaceholderExample" xml:space="preserve">
+    <value>Ex: Partie rapide</value>
+  </data>
+  <data name="Lobby.YourNicknameLabel" xml:space="preserve">
+    <value>Votre pseudo</value>
+  </data>
+  <data name="Lobby.YourNicknamePlaceholder" xml:space="preserve">
+    <value>Entrez votre pseudo</value>
+  </data>
+  <data name="Lobby.AvailableGames" xml:space="preserve">
+    <value>Parties disponibles</value>
+  </data>
+  <data name="Lobby.NoGames" xml:space="preserve">
+    <value>Aucune partie pour le moment. Soyez le premier à en créer une !</value>
+  </data>
+  <data name="Lobby.Host" xml:space="preserve">
+    <value>Hôte</value>
+  </data>
+  <data name="Lobby.Players" xml:space="preserve">
+    <value>Joueurs</value>
+  </data>
+  <data name="Lobby.NicknamePlaceholder" xml:space="preserve">
+    <value>Pseudo</value>
+  </data>
+
+  <data name="Common.Status" xml:space="preserve">
+    <value>Statut</value>
+  </data>
+  <data name="Common.Connecting" xml:space="preserve">
+    <value>Connexion...</value>
+  </data>
+  <data name="Common.Close" xml:space="preserve">
+    <value>Fermer</value>
+  </data>
+  <data name="Common.Percent" xml:space="preserve">
+    <value>{0}%</value>
+  </data>
+
+  <data name="Morpion.Game.PlayerLabel" xml:space="preserve">
+    <value>Joueur</value>
+  </data>
+  <data name="Morpion.Game.Connected" xml:space="preserve">
+    <value>Connecté au serveur Morpion</value>
+  </data>
+  <data name="Morpion.Game.WaitingOpponent" xml:space="preserve">
+    <value>En attente de l'adversaire...</value>
+  </data>
+  <data name="Morpion.Game.GameStartsTurn" xml:space="preserve">
+    <value>La partie commence ! C'est au tour de {0}</value>
+  </data>
+  <data name="Morpion.Game.TurnOf" xml:space="preserve">
+    <value>C'est au tour de {0}</value>
+  </data>
+  <data name="Morpion.Game.WinnerIs" xml:space="preserve">
+    <value>Le gagnant est {0} !</value>
+  </data>
+  <data name="Morpion.Game.PlayerWon" xml:space="preserve">
+    <value>{0} a gagné !</value>
+  </data>
+  <data name="Morpion.Game.Tie" xml:space="preserve">
+    <value>Match nul !</value>
+  </data>
+  <data name="Morpion.Game.NotYourTurn" xml:space="preserve">
+    <value>Ce n'est pas votre tour !</value>
+  </data>
+  <data name="Morpion.Game.InvalidMove" xml:space="preserve">
+    <value>Mouvement invalide !</value>
+  </data>
+
+  <data name="Room.Title" xml:space="preserve">
+    <value>Salle d'attente: {0}</value>
+  </data>
+  <data name="Room.Game" xml:space="preserve">
+    <value>Jeu</value>
+  </data>
+  <data name="Room.StartGame" xml:space="preserve">
+    <value>Démarrer la partie</value>
+  </data>
+  <data name="Room.WaitingOthers" xml:space="preserve">
+    <value>En attente d'autres joueurs...</value>
+  </data>
+  <data name="Room.WaitingHost" xml:space="preserve">
+    <value>En attente que l'hôte démarre la partie...</value>
+  </data>
+
+  <data name="SpeedTyping.Lobbies.Title" xml:space="preserve">
+    <value>Lobby SpeedTyping</value>
+  </data>
+  <data name="SpeedTyping.Lobbies.Subtitle" xml:space="preserve">
+    <value>Rejoignez un lobby existant ou créez-en un nouveau pour commencer à jouer.</value>
+  </data>
+  <data name="SpeedTyping.Lobbies.Available" xml:space="preserve">
+    <value>Lobbys disponibles</value>
+  </data>
+  <data name="SpeedTyping.Lobbies.CreateNew" xml:space="preserve">
+    <value>Créer un nouveau lobby</value>
+  </data>
+  <data name="SpeedTyping.Lobbies.LobbyNameLabel" xml:space="preserve">
+    <value>Nom du lobby :</value>
+  </data>
+  <data name="SpeedTyping.Lobbies.LobbyNamePlaceholder" xml:space="preserve">
+    <value>Entrez un nom</value>
+  </data>
+  <data name="SpeedTyping.Lobbies.HostLabel" xml:space="preserve">
+    <value>Host</value>
+  </data>
+  <data name="SpeedTyping.LegacyLobbies.PageTitle" xml:space="preserve">
+    <value>Liste des lobbys</value>
+  </data>
+
+  <data name="SpeedTyping.GameOver.Title" xml:space="preserve">
+    <value>Fin du jeu</value>
+  </data>
+  <data name="SpeedTyping.GameOver.BackToLobbies" xml:space="preserve">
+    <value>Retour à la liste des salons</value>
+  </data>
+  <data name="SpeedTyping.GameOver.PodiumTitle" xml:space="preserve">
+    <value>Podium :</value>
+  </data>
+  <data name="SpeedTyping.GameOver.NoPlayers" xml:space="preserve">
+    <value>Aucun joueur n'a participé.</value>
+  </data>
+  <data name="SpeedTyping.GameOver.WinnerIs" xml:space="preserve">
+    <value>Le vainqueur est : {0} !</value>
+  </data>
+
+  <data name="SpeedTyping.Lobby.WelcomeTitle" xml:space="preserve">
+    <value>Bienvenue au Lobby de {0}</value>
+  </data>
+  <data name="SpeedTyping.Lobby.Subtitle" xml:space="preserve">
+    <value>Rejoignez le lobby et préparez-vous à une partie de Speed Typing excitante !</value>
+  </data>
+  <data name="SpeedTyping.Lobby.PlayersTitle" xml:space="preserve">
+    <value>Liste des joueurs :</value>
+  </data>
+  <data name="SpeedTyping.Lobby.PlayerNamePlaceholder" xml:space="preserve">
+    <value>Nom du joueur</value>
+  </data>
+  <data name="SpeedTyping.Lobby.JoinLobby" xml:space="preserve">
+    <value>Rejoindre le lobby</value>
+  </data>
+  <data name="SpeedTyping.Lobby.StartGame" xml:space="preserve">
+    <value>Démarrer Speed Typing</value>
+  </data>
+  <data name="SpeedTyping.Lobby.GoToGame" xml:space="preserve">
+    <value>Accéder au jeu</value>
+  </data>
+  <data name="SpeedTyping.Lobby.ViewRules" xml:space="preserve">
+    <value>Voir les règles</value>
+  </data>
+
+  <data name="SpeedTyping.Rules.Title" xml:space="preserve">
+    <value>Règles du Speed Typing</value>
+  </data>
+  <data name="SpeedTyping.Rules.Item1" xml:space="preserve">
+    <value>Chaque joueur doit taper la phrase affichée le plus rapidement possible.</value>
+  </data>
+  <data name="SpeedTyping.Rules.Item2" xml:space="preserve">
+    <value>La précision est essentielle : chaque caractère compte.</value>
+  </data>
+  <data name="SpeedTyping.Rules.Item3" xml:space="preserve">
+    <value>Le joueur qui termine avec 100% de précision gagne la partie.</value>
+  </data>
+  <data name="SpeedTyping.Rules.Item4" xml:space="preserve">
+    <value>Si le temps imparti est écoulé, le joueur avec le meilleur score gagne.</value>
+  </data>
+  <data name="SpeedTyping.Rules.Item5" xml:space="preserve">
+    <value>Bonne chance et que le meilleur gagne !</value>
+  </data>
+
+  <data name="SpeedTyping.Lobby.EnterPlayerNameAlert" xml:space="preserve">
+    <value>Veuillez entrer un nom de joueur.</value>
+  </data>
+  <data name="SpeedTyping.Lobby.JoinLobbyError" xml:space="preserve">
+    <value>Impossible de rejoindre le lobby. Veuillez réessayer.</value>
+  </data>
+  <data name="SpeedTyping.Lobby.StartGameError" xml:space="preserve">
+    <value>Impossible de démarrer la partie. Veuillez réessayer.</value>
+  </data>
+
+  <data name="SpeedTyping.Game.WinnerCongrats" xml:space="preserve">
+    <value>Félicitations, {0} ! Vous avez gagné !</value>
+  </data>
+  <data name="SpeedTyping.Game.PlayerLabel" xml:space="preserve">
+    <value>Joueur</value>
+  </data>
+  <data name="SpeedTyping.Game.ProgressLabel" xml:space="preserve">
+    <value>Progression</value>
+  </data>
+  <data name="SpeedTyping.Game.TextToTypeTitle" xml:space="preserve">
+    <value>Phrase à taper</value>
+  </data>
+  <data name="SpeedTyping.Game.TypeAboveHint" xml:space="preserve">
+    <value>Tapez le texte ci-dessus.</value>
+  </data>
+  <data name="SpeedTyping.Game.PlayersProgressTitle" xml:space="preserve">
+    <value>Progression des joueurs</value>
+  </data>
+  <data name="SpeedTyping.Game.EndGameFailed" xml:space="preserve">
+    <value>Impossible de terminer la partie. Vérifiez votre connexion.</value>
+  </data>
+
+  <data name="Puissance4.Game.Subtitle" xml:space="preserve">
+    <value>Alignez 4 jetons pour gagner</value>
+  </data>
+  <data name="Puissance4.Game.WaitingForStart" xml:space="preserve">
+    <value>En attente du démarrage de la partie...</value>
+  </data>
+  <data name="Puissance4.Game.Player1Default" xml:space="preserve">
+    <value>Joueur 1</value>
+  </data>
+  <data name="Puissance4.Game.Player2Default" xml:space="preserve">
+    <value>Joueur 2</value>
+  </data>
+  <data name="Puissance4.Game.Tie" xml:space="preserve">
+    <value>Match nul !</value>
+  </data>
+  <data name="Puissance4.Game.WinnerWon" xml:space="preserve">
+    <value>{0} a gagné !</value>
+  </data>
+  <data name="Puissance4.Game.CommunicationError" xml:space="preserve">
+    <value>Erreur de communication</value>
+  </data>
+  <data name="Puissance4.Game.YourTurn" xml:space="preserve">
+    <value>C'est votre tour !</value>
+  </data>
+  <data name="Puissance4.Game.TurnOf" xml:space="preserve">
+    <value>Tour de {0}</value>
+  </data>
+  <data name="Puissance4.Game.ConnectionError" xml:space="preserve">
+    <value>Erreur de connexion</value>
+  </data>
+
+  <data name="Puissance4.Lobbies.Title" xml:space="preserve">
+    <value>Lobby Puissance 4</value>
+  </data>
+  <data name="Puissance4.Lobbies.Subtitle" xml:space="preserve">
+    <value>Créez ou rejoignez une partie</value>
+  </data>
+</root>
+
+

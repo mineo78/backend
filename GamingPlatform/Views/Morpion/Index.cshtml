@@ -1,5 +1,7 @@
 ﻿@model GamingPlatform.Views.Morpion.MorpionModel
+@removeTagHelper *, Microsoft.AspNetCore.Mvc.TagHelpers
 @{
+    Layout = null;
 }
 <!DOCTYPE html>
 <html lang="fr">
@@ -54,7 +56,6 @@
         }
     </style>
 </head>
-<body>
       <script id="board-template" type="text/x-handlebars-template">
         {{debug}}
         <table>
@@ -332,16 +333,4 @@
             });
         });
 
-
-    </script>
-    <script>
-        function googleTranslateElementInit() {
-            new google.translate.TranslateElement(
-                { pageLanguage: 'fr' },
-                'google_translate_element'
-            );
-        }
-    </script>
-    <script src="https://translate.google.com/translate_a/element.js?cb=googleTranslateElementInit"></script>
-</body>
 </html>

@@ -1,8 +1,8 @@
 @{
-    ViewData["Title"] = "Puissance 4";
+    ViewData["Title"] = Localizer["Game.Puissance4.Title"].Value;
 }
 <!DOCTYPE html>
-<html lang="fr">
+<html lang="@System.Globalization.CultureInfo.CurrentUICulture.Name">
 <head>
     <meta charset="UTF-8">
     <meta name="viewport" content="width=device-width, initial-scale=1.0">
@@ -504,13 +504,13 @@
                     <span class="logo-dot cyan"></span>
                 </div>
             </div>
-            <h1>Puissance 4</h1>
-            <p class="subtitle">Alignez 4 jetons pour gagner</p>
+            <h1>@Localizer["Game.Puissance4.Title"]</h1>
+            <p class="subtitle">@Localizer["Puissance4.Game.Subtitle"]</p>
         </header>
 
         <!-- Status Card -->
         <div class="status-card">
-            <p id="status">En attente du démarrage de la partie...</p>
+            <p id="status">@Localizer["Puissance4.Game.WaitingForStart"]</p>
         </div>
 
         <!-- Username Section (Hidden) -->
@@ -523,12 +523,12 @@
             <div class="player-info">
                 <div class="player-tag red">
                     <span class="player-dot red"></span>
-                    <span id="player1Name">Joueur 1</span>
+                    <span id="player1Name">@Localizer["Puissance4.Game.Player1Default"]</span>
                 </div>
                 <span class="vs-text">VS</span>
                 <div class="player-tag cyan">
                     <span class="player-dot cyan"></span>
-                    <span id="player2Name">Joueur 2</span>
+                    <span id="player2Name">@Localizer["Puissance4.Game.Player2Default"]</span>
                 </div>
             </div>
             
@@ -542,6 +542,15 @@
 
     <script type="text/javascript">
         $(function () {
+            const i18n = {
+                tie: "@System.Text.Encodings.Web.JavaScriptEncoder.Default.Encode(Localizer["Puissance4.Game.Tie"].Value)",
+                winnerWon: "@System.Text.Encodings.Web.JavaScriptEncoder.Default.Encode(Localizer["Puissance4.Game.WinnerWon"].Value)", // "{0}"
+                commError: "@System.Text.Encodings.Web.JavaScriptEncoder.Default.Encode(Localizer["Puissance4.Game.CommunicationError"].Value)",
+                yourTurn: "@System.Text.Encodings.Web.JavaScriptEncoder.Default.Encode(Localizer["Puissance4.Game.YourTurn"].Value)",
+                turnOf: "@System.Text.Encodings.Web.JavaScriptEncoder.Default.Encode(Localizer["Puissance4.Game.TurnOf"].Value)", // "{0}"
+                connectionError: "@System.Text.Encodings.Web.JavaScriptEncoder.Default.Encode(Localizer["Puissance4.Game.ConnectionError"].Value)"
+            };
+
             const lobbyId = '@ViewBag.LobbyId';
             const currentPlayer = '@ViewBag.CurrentPlayer';
             let currentGame = null;
@@ -581,10 +590,10 @@
                 disableBoard();
                 
                 if (result.isTie) {
-                    setStatus("🤝 Match nul !", false);
+                    setStatus("🤝 " + i18n.tie, false);
                 } else {
                     const emoji = result.winnerColor === "Rouge" ? "🔴" : "🟢";
-                    setStatus(`${emoji} ${result.winner} a gagné !`, false);
+                    setStatus(`${emoji} ${i18n.winnerWon.replace("{0}", result.winner)}`, false);
                 }
 
                 hideColumnIndicator();
@@ -676,7 +685,7 @@
                 
                 connection.invoke("PlacePiece", lobbyId, currentPlayer, parseInt(column)).catch(function (err) {
                     console.error("Error:", err);
-                    setStatus("❌ Erreur de communication", false);
+                    setStatus("❌ " + i18n.commError, false);
                 });
             }
 
@@ -685,9 +694,9 @@
                 const emoji = currentPlayerName === currentGame.player1.name ? "🔴" : "🟢";
                 
                 if (isMyTurn) {
-                    setStatus(`${emoji} C'est votre tour !`, false);
+                    setStatus(`${emoji} ${i18n.yourTurn}`, false);
                 } else {
-                    setStatus(`${emoji} Tour de ${currentPlayerName}`, false);
+                    setStatus(`${emoji} ${i18n.turnOf.replace("{0}", currentPlayerName)}`, false);
                 }
             }
 
@@ -696,14 +705,13 @@
             }
 
             connection.start().then(function () {
-                console.log("Connected to Puissance4Hub");
                 connection.invoke("JoinLobbyGroup", lobbyId).then(() => {
                     // Demander l'état initial du jeu
                     // Note: Le jeu est déjà démarré par le LobbyHub, donc on attend juste l'event GameStart
                     // ou on pourrait demander l'état actuel si on arrive en retard
                 });
             }).catch(function (err) {
-                setStatus("❌ Erreur de connexion", false);
+                setStatus("❌ " + i18n.connectionError, false);
             });
         });
     </script>

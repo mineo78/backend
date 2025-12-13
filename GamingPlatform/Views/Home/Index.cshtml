@@ -1,21 +1,21 @@
 ﻿@{
-    ViewData["Title"] = "Accueil";
+    ViewData["Title"] = Localizer["Nav.Home"].Value;
 }
 
 <!-- HERO SECTION -->
 <div class="hero-section text-center">
     <div class="hero-content">
-        <h1 class="display-3 fw-bold hero-title">Chemin de Travers</h1>
-        <p class="lead text-light opacity-75 mb-4">Découvrez nos jeux interactifs et défiez vos amis en temps réel !</p>
+        <h1 class="display-3 fw-bold hero-title">@Localizer["Home.HeroTitle"]</h1>
+        <p class="lead text-light opacity-75 mb-4">@Localizer["Home.HeroSubtitle"]</p>
         <a href="#games" class="btn btn-hero btn-lg px-5">
-            Jouer maintenant <span class="ms-2">🎮</span>
+            @Localizer["Common.PlayNow"] <span class="ms-2">🎮</span>
         </a>
     </div>
 </div>
 
 <!-- GAMES GRID -->
 <div id="games" class="container-fluid py-5">
-    <h2 class="text-center mb-5 section-title">Nos Jeux Disponibles</h2>
+    <h2 class="text-center mb-5 section-title">@Localizer["Home.GamesTitle"]</h2>
     
     <div class="row g-4 justify-content-center">
         <!-- Carte Puissance 4 -->
@@ -23,9 +23,9 @@
             <a asp-controller="Puissance4" asp-action="Game" class="game-card-link">
                 <div class="game-card">
                     <div class="card-icon red-glow">🔴</div>
-                    <h3 class="card-title">Puissance 4</h3>
-                    <p class="card-desc">Soyez le premier à aligner quatre jetons pour remporter la victoire !</p>
-                    <div class="card-action">Jouer <span class="arrow">→</span></div>
+                    <h3 class="card-title">@Localizer["Game.Puissance4.Title"]</h3>
+                    <p class="card-desc">@Localizer["Game.Puissance4.Desc"]</p>
+                    <div class="card-action">@Localizer["Common.Play"] <span class="arrow">→</span></div>
                 </div>
             </a>
         </div>
@@ -35,9 +35,9 @@
             <a asp-controller="SpeedTyping" asp-action="Index" class="game-card-link">
                 <div class="game-card">
                     <div class="card-icon cyan-glow">⚡</div>
-                    <h3 class="card-title">Speed Typing</h3>
-                    <p class="card-desc">Testez votre vitesse de frappe et votre précision face au chrono.</p>
-                    <div class="card-action">Jouer <span class="arrow">→</span></div>
+                    <h3 class="card-title">@Localizer["Game.SpeedTyping.Title"]</h3>
+                    <p class="card-desc">@Localizer["Game.SpeedTyping.Desc"]</p>
+                    <div class="card-action">@Localizer["Common.Play"] <span class="arrow">→</span></div>
                 </div>
             </a>
         </div>
@@ -47,9 +47,9 @@
             <a asp-controller="Morpion" asp-action="Index" class="game-card-link">
                 <div class="game-card">
                     <div class="card-icon purple-glow">❌</div>
-                    <h3 class="card-title">Morpion</h3>
-                    <p class="card-desc">Le classique indémodable. Alignez trois symboles avant l'adversaire.</p>
-                    <div class="card-action">Jouer <span class="arrow">→</span></div>
+                    <h3 class="card-title">@Localizer["Game.Morpion.Title"]</h3>
+                    <p class="card-desc">@Localizer["Game.Morpion.Desc"]</p>
+                    <div class="card-action">@Localizer["Common.Play"] <span class="arrow">→</span></div>
                 </div>
             </a>
         </div>
@@ -117,6 +117,7 @@
         text-decoration: none;
         color: inherit;
         display: block;
+        height: 100%;
     }
 
     .game-card {
@@ -125,6 +126,8 @@
         border-radius: 20px;
         padding: 40px 30px;
         height: 100%;
+        display: flex;
+        flex-direction: column;
         transition: all 0.4s cubic-bezier(0.175, 0.885, 0.32, 1.275);
         position: relative;
         overflow: hidden;
@@ -172,6 +175,7 @@
         font-size: 0.95rem;
         line-height: 1.6;
         margin-bottom: 24px;
+        flex: 1;
     }
 
     .card-action {
@@ -181,6 +185,7 @@
         align-items: center;
         gap: 8px;
         transition: gap 0.3s ease;
+        margin-top: auto;
     }
 
     .game-card:hover .card-action {
